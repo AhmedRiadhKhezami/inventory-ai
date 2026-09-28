@@ -41,3 +41,12 @@
 - groupby : regrouper et additionner (total par jour, moyenne par jour de semaine)
 - nsmallest : trouver les valeurs les plus basses
 - Toujours vérifier une observation visuelle avec des chiffres
+
+### Demande intermittente (analyse par produit)
+- 55,2 % des lignes produit × jour sont à 0 vente
+- Répartition des 3 049 produits selon leur part de jours à 0 :
+  - Quotidien (< 20 %) : 229 (7,5 %)
+  - Régulier (20-50 %) : 959 (31,5 %)
+  - Irrégulier (50-80 %) : 1 370 (44,9 %)
+  - Rare (> 80 %) : 491 (16,1 %)
+- 61 % des produits ne se vendent pas la plupart des jours

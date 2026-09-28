@@ -25,3 +25,15 @@
 - Raison : Walmart ferme le jour de Noël (ce n'est pas une baisse de demande).
 - Action prévue : retirer ce jour de l'entraînement, ou ajouter une
   variable "magasin fermé". Décision à prendre lors de la modélisation.
+
+  ## 28/09/2026 : Pas de MAPE, utilisation du WAPE / MAE
+- Raison : 55,2 % des ventes sont à 0 → le MAPE divise par 0.
+
+## 28/09/2026 : Prévoir sur la période du délai fournisseur
+- Raison : pour 61 % des produits, le jour exact de vente est
+  imprévisible. La commande dépend du total sur le délai
+  fournisseur, qui est plus stable à prévoir.
+
+## 28/09/2026 : Évaluer l'erreur par groupe de produits
+- Raison : les produits rares et quotidiens n'ont pas le même
+  comportement, une erreur globale peut cacher des problèmes.

@@ -23,3 +23,21 @@
 ### Prochaine étape
 - Sauvegarder le tableau propre
 - Premiers graphiques des ventes
+
+
+## 28/09/2026 (suite) : Première analyse des ventes
+
+### Observations (magasin CA_1, ventes totales par jour)
+- Tendance : les ventes augmentent de 2011 à 2016
+- Chute à presque 0 chaque 25 décembre (magasin fermé)
+- Saisonnalité hebdomadaire : plus de ventes le samedi et le dimanche
+
+### Conséquences pour le modèle
+- Donner le jour de la semaine au modèle
+- Utiliser les ventes de la semaine précédente (même jour)
+- Traiter le 25 décembre à part
+
+### Appris
+- groupby : regrouper et additionner (total par jour, moyenne par jour de semaine)
+- nsmallest : trouver les valeurs les plus basses
+- Toujours vérifier une observation visuelle avec des chiffres

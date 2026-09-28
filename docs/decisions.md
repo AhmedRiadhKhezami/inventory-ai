@@ -15,3 +15,13 @@
 - Action : lignes supprimées. Les vrais 0 (produit en rayon,
   aucune vente) sont gardés.
 - Résultat : 5 918 109 → 4 788 267 lignes.
+
+## 28/09/2026 : Format Parquet pour les données propres
+- Raison : plus léger et plus rapide que CSV, conserve les types
+  (dates), standard Big Data (Spark, Databricks).
+
+  ## 28/09/2026 : Le 25 décembre est un jour anormal
+- Constat : chaque 25 décembre, les ventes tombent presque à 0.
+- Raison : Walmart ferme le jour de Noël (ce n'est pas une baisse de demande).
+- Action prévue : retirer ce jour de l'entraînement, ou ajouter une
+  variable "magasin fermé". Décision à prendre lors de la modélisation.

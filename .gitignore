@@ -183,3 +183,4 @@ cython_debug/
 # Données trop lourdes pour GitHub
 data/raw/*
 !data/raw/.gitkeep 
+data/processed/*

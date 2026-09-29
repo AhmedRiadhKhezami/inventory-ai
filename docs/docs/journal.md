@@ -50,3 +50,11 @@
   - Irrégulier (50-80 %) : 1 370 (44,9 %)
   - Rare (> 80 %) : 491 (16,1 %)
 - 61 % des produits ne se vendent pas la plupart des jours
+
+### Ruptures de stock probables (demande censurée)
+- Découverte : des produits avec prix (donc censés être en vente)
+  restent des mois à 0, puis se revendent régulièrement.
+  Exemples : FOODS_3_261 (~8 mois à 0), HOUSEHOLD_2_398 (~7 mois à 0)
+- Plus longue période de jours à 0 d'affilée, par produit :
+  - ≥ 60 jours : 1 941 produits (63,7 %), mélange produits rares + ruptures
+  - ≥ 180 jours : 628 produits (20,6 %), ruptures ou retraits très probables

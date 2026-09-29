@@ -37,3 +37,13 @@
 ## 28/09/2026 : Évaluer l'erreur par groupe de produits
 - Raison : les produits rares et quotidiens n'ont pas le même
   comportement, une erreur globale peut cacher des problèmes.
+
+  ## 29/09/2026 : Détection des ruptures probables (à implémenter)
+- Constat : de longues périodes à 0 avec prix = probablement rupture
+  de stock ou retrait du rayon, pas absence de demande.
+- Risque : le modèle sous-estime la demande → commandes trop faibles
+  → encore plus de ruptures.
+- Méthode prévue : seuil RELATIF au rythme de vente du produit
+  (pas un nombre de jours fixe, qui confondrait produits rares et ruptures).
+- Options : retirer ces périodes de l'entraînement, ou les marquer
+  avec une variable "rupture_probable".

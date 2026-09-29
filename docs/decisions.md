@@ -47,3 +47,25 @@
   (pas un nombre de jours fixe, qui confondrait produits rares et ruptures).
 - Options : retirer ces périodes de l'entraînement, ou les marquer
   avec une variable "rupture_probable".
+
+  ## 29/09/2026 : Prévision par produit et par jour
+- Raison : effet du jour de la semaine + délai fournisseur variable
+  selon le produit + possibilité d'additionner pour tout total.
+- La décision de commande utilise la somme sur le délai fournisseur.
+
+
+## 29/09/2026 : Horizon de prévision = 28 jours
+- Raison : couvre délai fournisseur + période entre deux commandes.
+- Cohérent avec le standard M5 (comparaison possible).
+
+## 29/09/2026 : Validation temporelle sur 3 périodes de 28 jours
+- Raison : un découpage au hasard ferait voir le futur au modèle
+  (data leakage) et donnerait une note trop optimiste.
+- 3 périodes au lieu d'une : éviter un résultat dû à la chance.
+- Dernière période réservée au test final (utilisée une seule fois).
+
+
+## 29/09/2026 : Mesures d'erreur = WAPE + biais
+- WAPE : supporte les zéros (contrairement au MAPE).
+- Biais : indique le sens de l'erreur (rupture vs surstock).
+- Calcul global et par groupe de produits.

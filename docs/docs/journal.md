@@ -70,3 +70,14 @@
 - La meilleure : moyenne des 28 derniers jours.
 - Un seul jour du passé = trop de hasard → mauvais.
 - Sur 28 jours, les erreurs s'équilibrent → 28 % au lieu de 75 %.
+
+### Test 2 (28/03 → 24/04/2016)
+
+| Méthode | Erreur par jour | Erreur sur 28 jours |
+|---|---|---|
+| Moyenne 28 derniers jours | 74,5 % | 26,8 % |
+| Même jour semaine dernière | 88,8 % | 36,2 % |
+| Moyenne même jour sur 8 semaines | 75,0 % | 27,1 % |
+
+- Même classement qu'au Test 1 → résultat fiable, pas de la chance.
+- Chiffre à battre (moyenne Test 1 + Test 2) : 27,3 % sur 28 jours.

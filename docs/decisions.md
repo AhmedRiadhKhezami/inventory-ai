@@ -75,3 +75,10 @@
 - Le vrai modèle doit faire mieux.
 - On mesure les 2 : par jour (pour comparer les modèles)
   et sur 28 jours (c'est ce qui compte pour la commande).
+
+  ## 30/09/2026 : Détecteur de ruptures, version 1 (mis de côté)
+- Résultat : 18,4 % des lignes marquées, 97 % des produits → trop.
+- Vérification visuelle : bon sur les longues coupures,
+  fausses alertes quand le rythme de vente du produit change.
+- Amélioration prévue : seuil basé sur le rythme récent (6 mois).
+- Mis de côté pour avancer sur LightGBM.

@@ -69,3 +69,9 @@
 - WAPE : supporte les zéros (contrairement au MAPE).
 - Biais : indique le sens de l'erreur (rupture vs surstock).
 - Calcul global et par groupe de produits.
+
+## 30/09/2026 : Méthode de référence = moyenne 28 jours
+- Erreur par jour : 75,3 %. Erreur sur 28 jours : 27,8 %.
+- Le vrai modèle doit faire mieux.
+- On mesure les 2 : par jour (pour comparer les modèles)
+  et sur 28 jours (c'est ce qui compte pour la commande).

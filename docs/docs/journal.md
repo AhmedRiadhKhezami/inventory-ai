@@ -58,3 +58,15 @@
 - Plus longue période de jours à 0 d'affilée, par produit :
   - ≥ 60 jours : 1 941 produits (63,7 %), mélange produits rares + ruptures
   - ≥ 180 jours : 628 produits (20,6 %), ruptures ou retraits très probables
+
+  ## 30/09/2026 : Premières méthodes simples (Test 1)
+
+| Méthode | Erreur par jour | Erreur sur 28 jours |
+|---|---|---|
+| Moyenne 28 derniers jours | 75,3 % | 27,8 % |
+| Même jour semaine dernière | 86,9 % | 34,1 % |
+| Moyenne même jour sur 8 semaines | 75,6 % | 29,7 % |
+
+- La meilleure : moyenne des 28 derniers jours.
+- Un seul jour du passé = trop de hasard → mauvais.
+- Sur 28 jours, les erreurs s'équilibrent → 28 % au lieu de 75 %.

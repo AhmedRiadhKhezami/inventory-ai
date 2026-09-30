@@ -104,3 +104,18 @@ Cause : les ventes utilisées étaient trop vieilles (1 mois de retard).
 | Modèle C v2 | 27,1 % | 25,9 % | 26,5 % |
 
 → Le modèle bat la méthode simple sur les 2 périodes. Gain petit (~0,8 point).
+
+### Modèle v3 (+ prix relatif, tendance, jours sans vente, rayon, catégorie)
+| Erreur sur 28 jours | Test 1 | Test 2 | Moyenne |
+|---|---|---|---|
+| Méthode simple | 27,8 % | 26,8 % | 27,3 % |
+| Modèle v2 | 27,1 % | 25,9 % | 26,5 % |
+| Modèle v3 | 26,5 % | 25,7 % | 26,1 % |
+
+### Importance des indices
+- Par nombre d'utilisations : prix, jours sans vente, mois, rayon en haut.
+- Par GAIN (ce qui réduit vraiment l'erreur) : moy_28j >> moy_56j > moy_7j
+  > moy_meme_jour. Tout le reste aide peu.
+- Le prix est souvent utilisé mais aide peu : il sert surtout à
+  reconnaître le produit.
+- Conclusion : le modèle = surtout "moyenne récente + petites corrections".

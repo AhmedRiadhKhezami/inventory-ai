@@ -81,3 +81,26 @@
 
 - Même classement qu'au Test 1 → résultat fiable, pas de la chance.
 - Chiffre à battre (moyenne Test 1 + Test 2) : 27,3 % sur 28 jours.
+
+## 30/09/2026 : Premier modèle LightGBM
+
+### Version 1 (indices = ventes d'il y a 28 jours et plus)
+| Modèle | Test 1 (28 j) |
+|---|---|
+| A : ventes passées | 30,6 % |
+| B : + prix | 30,2 % |
+| C : + calendrier | 30,1 % |
+→ Moins bien que la méthode simple (27,8 %).
+Cause : les ventes utilisées étaient trop vieilles (1 mois de retard).
+
+### Version 2 ("lundi matin" : on connaît tout jusqu'à la veille)
+- 50 exercices dans le passé (un toutes les 2 semaines)
+- Indices : moyennes 7/28/56 j, part des jours avec vente,
+  moyenne du même jour, horizon (J+1…J+28), prix, calendrier
+
+| | Test 1 (28 j) | Test 2 (28 j) | Moyenne |
+|---|---|---|---|
+| Méthode simple | 27,8 % | 26,8 % | 27,3 % |
+| Modèle C v2 | 27,1 % | 25,9 % | 26,5 % |
+
+→ Le modèle bat la méthode simple sur les 2 périodes. Gain petit (~0,8 point).

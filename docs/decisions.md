@@ -82,3 +82,11 @@
   fausses alertes quand le rythme de vente du produit change.
 - Amélioration prévue : seuil basé sur le rythme récent (6 mois).
 - Mis de côté pour avancer sur LightGBM.
+
+
+## 30/09/2026 : Construction des données par "date d'origine"
+- Problème : avec des indices d'il y a 28 jours et plus, le modèle
+  avait moins d'infos récentes que la méthode simple.
+- Solution : 50 dates d'origine dans le passé. Pour chacune, indices
+  calculés jusqu'à la veille + les 28 jours suivants à prévoir.
+- Résultat : le modèle bat la méthode simple (26,5 % contre 27,3 %).

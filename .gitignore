@@ -184,3 +184,8 @@ cython_debug/
 data/raw/*
 !data/raw/.gitkeep 
 data/processed/*
+
+# MLflow
+mlflow.db
+mlruns/
+mlartifacts/

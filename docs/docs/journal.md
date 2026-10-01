@@ -120,7 +120,6 @@ Cause : les ventes utilisées étaient trop vieilles (1 mois de retard).
   reconnaître le produit.
 - Conclusion : le modèle = surtout "moyenne récente + petites corrections".
 
-
 ## 01/10/2026 : Phase 3, code propre (début)
 
 ### Fait
@@ -139,3 +138,18 @@ Cause : les ventes utilisées étaient trop vieilles (1 mois de retard).
 - sys.path.append("..") pour importer src/ depuis un notebook
 - if __name__ == "__main__" : code lancé seulement quand on exécute le fichier
 - Toujours vérifier qu'on retrouve les mêmes chiffres après avoir déplacé du code
+
+## 01/10/2026 : MLflow
+- Installation de MLflow, résultats enregistrés dans mlflow.db
+- train.py enregistre pour chaque essai : paramètres, nom du modèle,
+  période de test, liste des indices, WAPE jour, WAPE 28 j, biais
+- Premier essai enregistré : v3 (Test 1 = 26,5 %, Test 2 = 25,7 %)
+- Page web : mlflow ui --backend-store-uri sqlite:///mlflow.db
+
+## 01/10/2026 : MLflow
+- Installation de MLflow 3.16.1, résultats enregistrés dans mlflow.db
+- train.py enregistre pour chaque essai : paramètres, nom du modèle,
+  période de test, liste des indices, WAPE jour, WAPE 28 j, biais
+- Premier essai enregistré : v3 (Test 1 = 26,5 %, Test 2 = 25,7 %)
+- Page web : mlflow ui --backend-store-uri sqlite:///mlflow.db
+  puis http://127.0.0.1:5000

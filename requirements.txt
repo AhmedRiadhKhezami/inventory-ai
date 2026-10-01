@@ -4,4 +4,6 @@ pyarrow
 matplotlib
 jupyter
 lightgbm
-requirements.txt
+scikit-learn
+mlflow
+

@@ -64,7 +64,6 @@
 - 3 périodes au lieu d'une : éviter un résultat dû à la chance.
 - Dernière période réservée au test final (utilisée une seule fois).
 
-
 ## 29/09/2026 : Mesures d'erreur = WAPE + biais
 - WAPE : supporte les zéros (contrairement au MAPE).
 - Biais : indique le sens de l'erreur (rupture vs surstock).
@@ -83,14 +82,12 @@
 - Amélioration prévue : seuil basé sur le rythme récent (6 mois).
 - Mis de côté pour avancer sur LightGBM.
 
-
 ## 30/09/2026 : Construction des données par "date d'origine"
 - Problème : avec des indices d'il y a 28 jours et plus, le modèle
   avait moins d'infos récentes que la méthode simple.
 - Solution : 50 dates d'origine dans le passé. Pour chacune, indices
   calculés jusqu'à la veille + les 28 jours suivants à prévoir.
 - Résultat : le modèle bat la méthode simple (26,5 % contre 27,3 %).
-
 
 ## 01/10/2026 : Le code va dans src/, les notebooks servent à regarder
 - Raison : la fonction wape était copiée dans 2 notebooks. Une erreur
@@ -99,3 +96,13 @@
   Les notebooks importent ces fonctions pour analyser et faire des graphiques.
 - Réglages (chemin, dates des tests, paramètres) en haut de train.py,
   à un seul endroit.
+
+  ## 01/10/2026 : Suivi des essais avec MLflow
+- Raison : beaucoup d'essais à venir (C, D, E, réglages). Il faut savoir
+  quel réglage a donné quel résultat, sans le noter à la main.
+- mlflow.db n'est pas envoyé sur GitHub (.gitignore).
+
+## 01/10/2026 : Suivi des essais avec MLflow
+- Raison : beaucoup d'essais à venir (C, D, E, réglages). Il faut savoir
+  quel réglage a donné quel résultat, sans le noter à la main.
+- mlflow.db n'est pas envoyé sur GitHub (.gitignore).

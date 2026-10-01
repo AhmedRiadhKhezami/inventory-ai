@@ -181,3 +181,13 @@ Cause : les ventes utilisées étaient trop vieilles (1 mois de retard).
   - dollar : 5 410 lignes (par jour ouvré, depuis 2006)
 - Tous commencent avant 2011 → utilisables avec M5
 - À faire : les mettre tous au rythme "par jour" (étape 4.3)
+
+## Phase 4.2 : Signaux géopolitiques (GPR) et logistiques (GSCPI)
+- Téléchargés à la main (pas de téléchargement automatique simple) :
+  - data_gpr_export.xls (GPR par mois, depuis 1985, dont GPRC_USA)
+  - data_gpr_daily_recent.xls (GPR par jour, depuis 1985, moyennes 7 et 30 j)
+  - gscpi_data.xls (GSCPI par mois, depuis 1998, onglet "GSCPI Monthly Data")
+- src/external.py lit ces fichiers et les sauvegarde en CSV propres :
+  gpr_mois.csv, gpr_jour.csv, gscpi.csv
+- Vérification : GPR de mars 2011 = 136,9 (Libye, Fukushima) contre
+  79,4 en janvier → l'indice réagit aux vrais événements

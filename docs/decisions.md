@@ -127,3 +127,12 @@
 - Inflation et confiance : pouvoir d'achat et moral des consommateurs.
 - Dollar : prix des produits importés (effet attendu faible).
 - Source gratuite, téléchargement automatique, disponible avant 2011.
+
+## Signaux géopolitiques et logistiques
+- GPR monde + GPR États-Unis (GPRC_USA) : Walmart est aux États-Unis.
+- GPR par jour : utilisé en moyennes 7 et 30 jours, car la valeur
+  d'un seul jour varie trop.
+- GSCPI : pression sur la logistique mondiale (transport, délais).
+- ⚠ Le GSCPI est corrigé après publication (ex : juillet 2026 annoncé
+  à 0,79 puis corrigé à 0,94). On utilise les valeurs corrigées,
+  qui n'étaient pas connues à l'époque : limite à signaler.

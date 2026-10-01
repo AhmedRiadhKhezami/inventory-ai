@@ -7,4 +7,6 @@ lightgbm
 scikit-learn
 mlflow
 pytest
+xlrd
+openpyxl
 

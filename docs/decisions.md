@@ -136,3 +136,13 @@
 - ⚠ Le GSCPI est corrigé après publication (ex : juillet 2026 annoncé
   à 0,79 puis corrigé à 0,94). On utilise les valeurs corrigées,
   qui n'étaient pas connues à l'époque : limite à signaler.
+
+  ## Délais de publication des signaux (anti-triche)
+- Un chiffre n'est pas connu le jour qu'il décrit. Ex : l'inflation de
+  janvier est publiée vers le 15 février.
+- Délais utilisés : 1 jour (pétrole, essence, dollar, GPR jour),
+  31 jours (confiance, GPR mois), 38 jours (GSCPI), 45 jours (inflation).
+- Pour chaque jour, on prend la dernière valeur dont la date de
+  publication est passée (merge_asof "backward").
+- Limite : délais approximatifs, et les valeurs ont pu être corrigées
+  après publication.

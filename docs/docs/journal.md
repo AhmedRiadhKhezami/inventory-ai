@@ -191,3 +191,11 @@ Cause : les ventes utilisées étaient trop vieilles (1 mois de retard).
   gpr_mois.csv, gpr_jour.csv, gscpi.csv
 - Vérification : GPR de mars 2011 = 136,9 (Libye, Fukushima) contre
   79,4 en janvier → l'indice réagit aux vrais événements
+
+  ## Phase 4.3 : Table des signaux externes par jour
+- src/signaux.py : 1 ligne par jour (2009 → 2016), 11 signaux + 3 variations
+  (pétrole sur 30 j, essence sur 30 j, inflation sur 12 mois)
+- Chaque signal = la dernière valeur DÉJÀ CONNUE ce jour-là
+  (délai de publication + merge_asof)
+- Sauvegardé dans data/processed/signaux_externes.parquet
+- Commande : .venv\Scripts\python -m src.signaux

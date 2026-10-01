@@ -153,3 +153,12 @@ Cause : les ventes utilisées étaient trop vieilles (1 mois de retard).
 - Premier essai enregistré : v3 (Test 1 = 26,5 %, Test 2 = 25,7 %)
 - Page web : mlflow ui --backend-store-uri sqlite:///mlflow.db
   puis http://127.0.0.1:5000
+
+
+  ## 01/10/2026 : Tests automatiques (fin de la Phase 3)
+- pytest installé
+- tests/test_metrics.py : 3 tests (WAPE, biais, prévision parfaite)
+- tests/test_features.py : 3 tests (28 jours, moyenne 7 jours,
+  pas de triche avec le futur)
+- Commande : .venv\Scripts\python -m pytest -v → 6 passed
+- Phase 3 terminée : code dans src/, MLflow, tests

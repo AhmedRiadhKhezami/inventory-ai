@@ -106,3 +106,10 @@
 - Raison : beaucoup d'essais à venir (C, D, E, réglages). Il faut savoir
   quel réglage a donné quel résultat, sans le noter à la main.
 - mlflow.db n'est pas envoyé sur GitHub (.gitignore).
+
+
+## 01/10/2026 : Test anti-fuite de données
+- Le test change toutes les ventes futures, puis vérifie que les
+  indices ne changent pas.
+- Raison : la fuite de données (le modèle voit le futur) est l'erreur
+  la plus grave en prévision, et elle est invisible dans les résultats.

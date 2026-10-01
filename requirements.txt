@@ -6,4 +6,5 @@ jupyter
 lightgbm
 scikit-learn
 mlflow
+pytest
 

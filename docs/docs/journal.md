@@ -1,6 +1,6 @@
 # Journal de bord
 
-## 28/09/2026 : Mise en place et préparation des données
+## Mise en place et préparation des données
 
 ### Fait
 - Création du dépôt GitHub `inventory-ai` et de la structure des dossiers
@@ -25,7 +25,7 @@
 - Premiers graphiques des ventes
 
 
-## 28/09/2026 (suite) : Première analyse des ventes
+## Première analyse des ventes
 
 ### Observations (magasin CA_1, ventes totales par jour)
 - Tendance : les ventes augmentent de 2011 à 2016
@@ -59,7 +59,7 @@
   - ≥ 60 jours : 1 941 produits (63,7 %), mélange produits rares + ruptures
   - ≥ 180 jours : 628 produits (20,6 %), ruptures ou retraits très probables
 
-  ## 30/09/2026 : Premières méthodes simples (Test 1)
+  ## Premières méthodes simples (Test 1)
 
 | Méthode | Erreur par jour | Erreur sur 28 jours |
 |---|---|---|
@@ -82,7 +82,7 @@
 - Même classement qu'au Test 1 → résultat fiable, pas de la chance.
 - Chiffre à battre (moyenne Test 1 + Test 2) : 27,3 % sur 28 jours.
 
-## 30/09/2026 : Premier modèle LightGBM
+## Premier modèle LightGBM
 
 ### Version 1 (indices = ventes d'il y a 28 jours et plus)
 | Modèle | Test 1 (28 j) |
@@ -120,7 +120,7 @@ Cause : les ventes utilisées étaient trop vieilles (1 mois de retard).
   reconnaître le produit.
 - Conclusion : le modèle = surtout "moyenne récente + petites corrections".
 
-## 01/10/2026 : Phase 3, code propre (début)
+## Phase 3, code propre (début)
 
 ### Fait
 - src/metrics.py : fonctions wape et biais (testées : 25 % / +5 % sur l'exemple)
@@ -139,14 +139,14 @@ Cause : les ventes utilisées étaient trop vieilles (1 mois de retard).
 - if __name__ == "__main__" : code lancé seulement quand on exécute le fichier
 - Toujours vérifier qu'on retrouve les mêmes chiffres après avoir déplacé du code
 
-## 01/10/2026 : MLflow
+## MLflow
 - Installation de MLflow, résultats enregistrés dans mlflow.db
 - train.py enregistre pour chaque essai : paramètres, nom du modèle,
   période de test, liste des indices, WAPE jour, WAPE 28 j, biais
 - Premier essai enregistré : v3 (Test 1 = 26,5 %, Test 2 = 25,7 %)
 - Page web : mlflow ui --backend-store-uri sqlite:///mlflow.db
 
-## 01/10/2026 : MLflow
+## MLflow
 - Installation de MLflow 3.16.1, résultats enregistrés dans mlflow.db
 - train.py enregistre pour chaque essai : paramètres, nom du modèle,
   période de test, liste des indices, WAPE jour, WAPE 28 j, biais
@@ -155,10 +155,18 @@ Cause : les ventes utilisées étaient trop vieilles (1 mois de retard).
   puis http://127.0.0.1:5000
 
 
-  ## 01/10/2026 : Tests automatiques (fin de la Phase 3)
+  ## Tests automatiques (fin de la Phase 3)
 - pytest installé
 - tests/test_metrics.py : 3 tests (WAPE, biais, prévision parfaite)
 - tests/test_features.py : 3 tests (28 jours, moyenne 7 jours,
   pas de triche avec le futur)
 - Commande : .venv\Scripts\python -m pytest -v → 6 passed
 - Phase 3 terminée : code dans src/, MLflow, tests
+
+## Phase 4.1 : Téléchargement des signaux économiques (FRED)
+- src/external.py télécharge 5 signaux depuis FRED :
+  pétrole (DCOILWTICO, jour), essence (GASREGW, semaine),
+  inflation (CPIAUCSL, mois), confiance (UMCSENT, mois),
+  dollar (DTWEXBGS, jour)
+- Fichiers rangés dans data/raw/external/ (pas sur GitHub)
+- Commande : .venv\Scripts\python -m src.external

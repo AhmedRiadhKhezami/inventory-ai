@@ -119,3 +119,23 @@ Cause : les ventes utilisées étaient trop vieilles (1 mois de retard).
 - Le prix est souvent utilisé mais aide peu : il sert surtout à
   reconnaître le produit.
 - Conclusion : le modèle = surtout "moyenne récente + petites corrections".
+
+
+## 01/10/2026 : Phase 3, code propre (début)
+
+### Fait
+- src/metrics.py : fonctions wape et biais (testées : 25 % / +5 % sur l'exemple)
+- src/features.py : charger_donnees, construire_exercice ("lundi matin"),
+  construire_entrainement (50 lundis), liste FEATURES (16 indices)
+- src/train.py : entraîne et teste le modèle sur Test 1 et Test 2
+- Une seule commande lance tout : .venv\Scripts\python -m src.train
+
+### Vérification
+- Mêmes résultats que le notebook 05 (v3) :
+  Test 1 = 26,5 %, Test 2 = 25,7 % (WAPE 28 jours)
+  → le déplacement du code n'a rien cassé
+
+### Appris
+- sys.path.append("..") pour importer src/ depuis un notebook
+- if __name__ == "__main__" : code lancé seulement quand on exécute le fichier
+- Toujours vérifier qu'on retrouve les mêmes chiffres après avoir déplacé du code

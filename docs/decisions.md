@@ -90,3 +90,12 @@
 - Solution : 50 dates d'origine dans le passé. Pour chacune, indices
   calculés jusqu'à la veille + les 28 jours suivants à prévoir.
 - Résultat : le modèle bat la méthode simple (26,5 % contre 27,3 %).
+
+
+## 01/10/2026 : Le code va dans src/, les notebooks servent à regarder
+- Raison : la fonction wape était copiée dans 2 notebooks. Une erreur
+  corrigée à un endroit restait à l'autre.
+- Règle : chaque fonction est écrite UNE SEULE FOIS dans src/.
+  Les notebooks importent ces fonctions pour analyser et faire des graphiques.
+- Réglages (chemin, dates des tests, paramètres) en haut de train.py,
+  à un seul endroit.

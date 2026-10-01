@@ -120,3 +120,10 @@
 - Inflation et confiance : pouvoir d'achat et moral des consommateurs.
 - Dollar : prix des produits importés (effet attendu faible).
 - Source gratuite, téléchargement automatique, disponible avant 2011.
+
+## Signaux économiques choisis (FRED)
+- Pétrole et essence : coût de la vie et budget des clients Walmart.
+  Vrai choc dans la période M5 (chute du pétrole en 2014-2015).
+- Inflation et confiance : pouvoir d'achat et moral des consommateurs.
+- Dollar : prix des produits importés (effet attendu faible).
+- Source gratuite, téléchargement automatique, disponible avant 2011.

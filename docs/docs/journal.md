@@ -170,3 +170,14 @@ Cause : les ventes utilisées étaient trop vieilles (1 mois de retard).
   dollar (DTWEXBGS, jour)
 - Fichiers rangés dans data/raw/external/ (pas sur GitHub)
 - Commande : .venv\Scripts\python -m src.external
+
+## Phase 4.1 : Téléchargement des signaux économiques (FRED)
+- src/external.py télécharge 5 signaux depuis FRED
+- Résultat :
+  - pétrole : 10 629 lignes (par jour ouvré, depuis 1986)
+  - essence : 1 885 lignes (par semaine, depuis 1990)
+  - inflation : 956 lignes (par mois, depuis 1947)
+  - confiance : 886 lignes (par mois, depuis 1952)
+  - dollar : 5 410 lignes (par jour ouvré, depuis 2006)
+- Tous commencent avant 2011 → utilisables avec M5
+- À faire : les mettre tous au rythme "par jour" (étape 4.3)

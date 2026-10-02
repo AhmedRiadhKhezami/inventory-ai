@@ -176,3 +176,15 @@
 - M5 (demande en supermarché) : aucun effet.
 - USAID (envois internationaux) : lien mesurable avec le GSCPI.
 - Le GSCPI sera un indice du modèle de retard, et la base du stress test.
+
+
+## Indices du modèle de retard : seulement ce qui est connu à la commande
+- Autorisé : origine, usine, fournisseur, destination, transport prévu,
+  type de produit, quantité, date prévue, signaux déjà publiés.
+- Interdit : date réelle de livraison, nombre de jours de retard,
+  date d'enregistrement de la livraison.
+
+## From RDC : beaucoup plus de retards (24,5 % contre 6,2 %)
+- Surprenant (l'entrepôt est plus proche du client).
+- Hypothèses : dates promises trop serrées, ou stock absent de l'entrepôt.
+- Indice très fort pour le modèle, à discuter dans le mémoire.

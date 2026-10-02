@@ -107,9 +107,11 @@ PAYS_REGION = {
 
 
 def lire_date(colonne):
-    """Transforme '14-Nov-06' en vraie date. Les textes non-dates deviennent vides."""
-    return pd.to_datetime(colonne, format="%d-%b-%y", errors="coerce")
-
+    """Lit les 2 formats de date du fichier : '14-Nov-06' et '8/27/14'.
+    Les textes non-dates ('Date Not Captured'...) deviennent vides."""
+    format_1 = pd.to_datetime(colonne, format="%d-%b-%y", errors="coerce")
+    format_2 = pd.to_datetime(colonne, format="%m/%d/%y", errors="coerce")
+    return format_1.fillna(format_2)
 
 def nettoyer_usaid():
     df = pd.read_csv(CHEMIN_BRUT)

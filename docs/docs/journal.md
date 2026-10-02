@@ -251,3 +251,16 @@ Cause : les ventes utilisées étaient trop vieilles (1 mois de retard).
 - Pic commun en 2010-2011 (GSCPI ≈ +1,6 début 2011, retards > 50 %),
   période du tremblement de terre au Japon.
 - Ensuite (2012-2015) : GSCPI bas, retards variables sans lien clair.
+
+
+## Module 1 : Informations disponibles au moment de la commande
+- 7 305 envois depuis 2010
+- Fulfill Via :
+  - Direct Drop (direct de l'usine) : 3 697 envois, 6,2 % en retard
+  - From RDC (entrepôt régional) : 3 608 envois, 24,5 % en retard
+- Produits : ARV (6 143), HRDT (1 137), autres très rares
+- 40 pays de destination, 55 fournisseurs
+- Bug corrigé : la date de commande est écrite "8/27/14" (mois/jour/année),
+  les autres dates "14-Nov-06". lire_date lit maintenant les 2 formats.
+  Date de commande manquante : 100 % → 50,2 %
+  (= envois From RDC, sans commande fournisseur, + "Date Not Captured")

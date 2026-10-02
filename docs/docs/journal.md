@@ -233,3 +233,21 @@ Cause : les ventes utilisées étaient trop vieilles (1 mois de retard).
 | Avion | 9,6 % |
 
 - Attention : lien ≠ cause (l'Asie = surtout génériques indiens).
+
+
+## Module 1 : Retards dans le temps et pression logistique (GSCPI)
+- Notebook 06_usaid_analyse
+
+| Années | Envois par an | % en retard |
+|---|---|---|
+| 2006 | 65 | 0 % |
+| 2007-2009 | 672 à 1 253 | 1,3 à 3,6 % |
+| 2010-2015 | 1 011 à 1 528 | 7,9 à 23,5 % |
+
+- Saut brutal en 2010 : retards probablement mal enregistrés avant.
+- Corrélation % de retard / GSCPI (par mois) :
+  - toutes années : 0,32
+  - depuis 2010 : 0,45
+- Pic commun en 2010-2011 (GSCPI ≈ +1,6 début 2011, retards > 50 %),
+  période du tremblement de terre au Japon.
+- Ensuite (2012-2015) : GSCPI bas, retards variables sans lien clair.

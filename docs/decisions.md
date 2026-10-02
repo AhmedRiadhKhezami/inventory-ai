@@ -165,3 +165,14 @@
 
 ## Réparation du texte avec ftfy
 - Le CSV et l'Excel ont le même texte abîmé (problème à la source).
+
+## Entraînement du modèle de retard à partir de 2010
+- 2007-2009 : beaucoup d'envois mais presque aucun retard, puis saut
+  brutal en 2010 → enregistrement des retards douteux avant 2010.
+- On garde 2010-2015 : 7 305 envois.
+- Preuve : la corrélation retard / GSCPI passe de 0,32 à 0,45.
+
+## Les signaux externes jouent sur l'approvisionnement
+- M5 (demande en supermarché) : aucun effet.
+- USAID (envois internationaux) : lien mesurable avec le GSCPI.
+- Le GSCPI sera un indice du modèle de retard, et la base du stress test.

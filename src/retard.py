@@ -1,9 +1,13 @@
+from pathlib import Path
+
 import lightgbm as lgb
 import mlflow
+import numpy as np
 import pandas as pd
 from sklearn.metrics import roc_auc_score, precision_score, recall_score
 
-CHEMIN = "data/processed/usaid_clean.parquet"
+RACINE = Path(__file__).resolve().parent.parent
+CHEMIN = RACINE / "data" / "processed" / "usaid_clean.parquet"
 TESTS = {"Test 1": 2013, "Test 2": 2014}
 GROUPE = ["Fulfill Via", "Shipment Mode", "region_origine"]
 
@@ -16,7 +20,12 @@ NUMERIQUES = [
     "Line Item Quantity", "Line Item Value", "Pack Price", "Unit Price",
     "delai_prevu_jours", "mois_prevu",
 ]
+HISTORIQUE = [
+    "hist_retard_global", "hist_retard_pays", "hist_retard_fournisseur",
+    "hist_retard_mode", "hist_nb_envois_pays",
+]
 FEATURES_R1 = CATEGORIES + NUMERIQUES
+FEATURES_R1B = FEATURES_R1 + HISTORIQUE
 
 PARAMS = dict(n_estimators=300, learning_rate=0.03, num_leaves=15,
               min_child_samples=30, verbose=-1)
@@ -38,6 +47,39 @@ def charger():
         df[col] = pd.to_numeric(df[col], errors="coerce")
     for col in CATEGORIES:
         df[col] = df[col].fillna("Inconnu").astype("category")
+    return df.reset_index(drop=True)
+
+
+def ajouter_historique(df, jours_avant=30, fenetre=180):
+    """Pour chaque envoi : % de retard récent, calculé SEULEMENT avec les envois
+    déjà livrés à la date de décision (= date prévue - jours_avant)."""
+    df = df.copy()
+    decision = (df["date_prevue"] - pd.Timedelta(days=jours_avant)).to_numpy()
+    reel = df["date_reelle"].to_numpy()
+    retard = df["en_retard"].to_numpy()
+    pays = df["Country"].astype(str).to_numpy()
+    fournisseur = df["Vendor"].astype(str).to_numpy()
+    mode = df["Fulfill Via"].astype(str).to_numpy()
+    duree = np.timedelta64(fenetre, "D")
+
+    def taux(masque):
+        return retard[masque].mean() if masque.any() else np.nan
+
+    g, p, v, m, charge = [], [], [], [], []
+    for i in range(len(df)):
+        connu = (reel < decision[i]) & (reel >= decision[i] - duree)
+        meme_pays = connu & (pays == pays[i])
+        g.append(taux(connu))
+        p.append(taux(meme_pays))
+        v.append(taux(connu & (fournisseur == fournisseur[i])))
+        m.append(taux(connu & (mode == mode[i])))
+        charge.append(meme_pays.sum())
+
+    df["hist_retard_global"] = g
+    df["hist_retard_pays"] = p
+    df["hist_retard_fournisseur"] = v
+    df["hist_retard_mode"] = m
+    df["hist_nb_envois_pays"] = charge
     return df
 
 
@@ -50,6 +92,13 @@ def mesurer(vrai, risque, seuil):
         "precision": precision_score(vrai, alerte, zero_division=0),
         "pct_alertes": alerte.mean(),
     }
+
+
+def auc_par_mode(test, risque):
+    """AUC séparée pour les envois usine (Direct Drop) et entrepôt (From RDC)."""
+    t = test.assign(risque=risque)
+    return {f"auc_{str(mode).split()[-1]}": roc_auc_score(g["en_retard"], g["risque"])
+            for mode, g in t.groupby("Fulfill Via", observed=True)}
 
 
 def baseline(train, test):
@@ -71,31 +120,32 @@ def modele_lgbm(train, test, features):
 
 def afficher(nom_modele, nom_test, r):
     print(f"{nom_modele:9} | {nom_test} | AUC : {r['auc']:.3f} "
-          f"| Rappel : {r['rappel']*100:.1f} % | Précision : {r['precision']*100:.1f} % "
-          f"| Alertes : {r['pct_alertes']*100:.1f} %")
+          f"| AUC usine : {r['auc_Drop']:.3f} | AUC entrepôt : {r['auc_RDC']:.3f} "
+          f"| Rappel : {r['rappel']*100:.1f} % | Précision : {r['precision']*100:.1f} %")
 
 
 if __name__ == "__main__":
     mlflow.set_tracking_uri("sqlite:///mlflow.db")
     mlflow.set_experiment("retard-import")
 
-    df = charger()
+    df = ajouter_historique(charger())
+
     for nom_test, annee in TESTS.items():
         train = df[df["annee"] < annee]
         test = df[df["annee"] == annee]
         seuil = train["en_retard"].mean()
 
-        # Baseline
-        r = mesurer(test["en_retard"], baseline(train, test), seuil)
+        risque = baseline(train, test)
+        r = mesurer(test["en_retard"], risque, seuil) | auc_par_mode(test, risque)
         afficher("Baseline", nom_test, r)
 
-        # LightGBM R1
-        with mlflow.start_run(run_name=f"R1 - {nom_test}"):
-            risque, _ = modele_lgbm(train, test, FEATURES_R1)
-            r = mesurer(test["en_retard"], risque, seuil)
-            mlflow.log_params(PARAMS)
-            mlflow.log_param("modele", "R1")
-            mlflow.log_param("test", nom_test)
-            mlflow.log_param("features", ",".join(FEATURES_R1))
-            mlflow.log_metrics(r)
-        afficher("R1", nom_test, r)
+        for nom_modele, features in [("R1", FEATURES_R1), ("R1B", FEATURES_R1B)]:
+            with mlflow.start_run(run_name=f"{nom_modele} - {nom_test}"):
+                risque, _ = modele_lgbm(train, test, features)
+                r = mesurer(test["en_retard"], risque, seuil) | auc_par_mode(test, risque)
+                mlflow.log_params(PARAMS)
+                mlflow.log_param("modele", nom_modele)
+                mlflow.log_param("test", nom_test)
+                mlflow.log_param("features", ",".join(features))
+                mlflow.log_metrics(r)
+            afficher(nom_modele, nom_test, r)

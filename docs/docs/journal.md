@@ -293,3 +293,24 @@ Cause : les ventes utilisées étaient trop vieilles (1 mois de retard).
 - R1 donne moins d'alertes (31 % et 29 % au lieu de 48 % et 41 %),
   donc rappel plus bas : comparaison du rappel non juste (seuils différents).
 - Essais enregistrés dans MLflow (expérience "retard-import").
+
+
+## Module 1 : Diagnostic de R1 + indices historiques (R1B)
+### Diagnostic (Test 2)
+- AUC usine (Direct Drop) : 0,829. AUC entrepôt (From RDC) : 0,494 = hasard.
+- L'AUC globale vient surtout de "entrepôt = risqué, usine = sûr".
+- Importance : Vendor 22 % (contient l'info usine/entrepôt), pays de
+  destination 15 %, prix et quantités élevés, origine 0 %.
+
+### R1B = R1 + 5 indices historiques
+(% de retard récent : global, pays, fournisseur, mode + charge du pays ;
+fenêtre de 180 jours, décision 30 jours avant la date prévue)
+
+| Modèle | AUC T1 | AUC T2 | Moyenne | Entrepôt T1 | Entrepôt T2 |
+|---|---|---|---|---|---|
+| Baseline | 0,669 | 0,818 | 0,744 | 0,532 | 0,566 |
+| R1 | 0,713 | 0,813 | 0,763 | 0,503 | 0,494 |
+| R1B | 0,753 | 0,821 | 0,787 | 0,608 | 0,511 |
+
+- L'historique aide au global et pour les entrepôts en 2013, pas en 2014.
+- AUC usine 2014 peu fiable : seulement ~18 retards.

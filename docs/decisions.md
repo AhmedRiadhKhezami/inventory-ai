@@ -212,3 +212,16 @@
 
 ## Pas de coût de transport, assurance ni poids dans le modèle
 - Souvent connus seulement après l'envoi → risque de triche.
+
+## Indices historiques (mémoire du passé récent)
+- % de retard récent par pays, fournisseur, mode, global + charge du pays.
+- Calculés uniquement avec les envois DÉJÀ LIVRÉS à la date de décision.
+- Hypothèse : décision prise 30 jours avant la date de livraison prévue.
+
+## Suivre l'AUC séparément pour usine et entrepôt
+- L'AUC globale cache que le modèle ne sait rien faire pour les
+  entrepôts (AUC ≈ 0,5). On suit les deux à chaque essai.
+
+## Chemins des fichiers à partir de la racine du projet
+- RACINE = Path(__file__).resolve().parent.parent
+- Le code marche depuis le terminal ET depuis les notebooks.

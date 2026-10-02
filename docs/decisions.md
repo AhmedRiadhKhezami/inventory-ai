@@ -146,3 +146,22 @@
   publication est passée (merge_asof "backward").
 - Limite : délais approximatifs, et les valeurs ont pu être corrigées
   après publication.
+
+
+  ## Changement de données : USAID + Online Retail II
+- M5 : supermarché sans import. Les signaux externes n'y aidaient pas.
+- Le but du projet est l'e-commerce qui importe de plusieurs pays.
+- Pas de données publiques réelles d'un e-commerçant importateur.
+- USAID : vrais envois internationaux avec pays d'origine, transport,
+  date prévue et date réelle. Limite : médicaments, surtout d'Inde,
+  surtout en avion.
+- Online Retail II : vraies ventes d'une boutique en ligne.
+- Le code M5 (pipeline, tests, MLflow, signaux) est réutilisé.
+
+## Pays d'origine à partir du nom de l'usine
+- Le fichier n'a pas de colonne "pays d'origine".
+- Table usine → pays faite à la main (88 usines).
+- 5 usines incertaines, marquées "à vérifier" (peu d'envois).
+
+## Réparation du texte avec ftfy
+- Le CSV et l'Excel ont le même texte abîmé (problème à la source).

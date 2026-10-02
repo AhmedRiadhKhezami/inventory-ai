@@ -1,10 +1,22 @@
 import pandas as pd
 
-FEATURES = [
+FEATURES_C = [
     "moy_7j", "moy_28j", "moy_56j", "part_jours_vente", "moy_meme_jour",
     "horizon", "sell_price", "jour_semaine", "mois", "evenement", "snap_CA",
     "prix_relatif", "tendance", "jours_sans_vente", "dept_id", "cat_id",
 ]
+
+ECONOMIE = [
+    "petrole", "essence", "dollar", "confiance",
+    "petrole_var_30j", "essence_var_30j", "inflation_12m",
+]
+
+GEOPOLITIQUE = ["gpr", "gpr_usa", "gpr_jour", "gpr_7j", "gpr_30j", "gscpi"]
+
+FEATURES_D = FEATURES_C + ECONOMIE
+FEATURES_E = FEATURES_D + GEOPOLITIQUE
+
+FEATURES = FEATURES_C  # nom gardé pour les anciens fichiers
 
 
 def charger_donnees(chemin):
@@ -17,7 +29,7 @@ def charger_donnees(chemin):
     return df
 
 
-def construire_exercice(df, origine):
+def construire_exercice(df, origine, signaux=None):
     """Un "lundi matin" : indices calculés jusqu'à la veille,
     et les 28 jours suivants à prévoir."""
     origine = pd.Timestamp(origine)
@@ -52,12 +64,20 @@ def construire_exercice(df, origine):
     # Rayon et catégorie = des groupes, pas des nombres
     cible["dept_id"] = pd.Categorical(cible["dept_id"], categories=sorted(df["dept_id"].unique()))
     cible["cat_id"] = pd.Categorical(cible["cat_id"], categories=sorted(df["cat_id"].unique()))
+
+    # Signaux externes : ceux CONNUS le lundi matin, les mêmes pour les 28 jours
+    if signaux is not None:
+        ligne = signaux[signaux["date"] == origine].drop(columns="date")
+        for col in ligne.columns:
+            cible[col] = ligne[col].iloc[0]
+
     return cible
 
 
-def construire_entrainement(df, debut_test, nb_origines=50):
+def construire_entrainement(df, debut_test, nb_origines=50, signaux=None):
     """Fabrique plusieurs "lundis matin" dans le passé, AVANT le test."""
     debut_test = pd.Timestamp(debut_test)
     origines = pd.date_range(end=debut_test - pd.Timedelta(days=28),
                              periods=nb_origines, freq="14D")
-    return pd.concat([construire_exercice(df, o) for o in origines], ignore_index=True)
+    return pd.concat([construire_exercice(df, o, signaux) for o in origines],
+                     ignore_index=True)

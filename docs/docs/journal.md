@@ -199,3 +199,37 @@ Cause : les ventes utilisées étaient trop vieilles (1 mois de retard).
   (délai de publication + merge_asof)
 - Sauvegardé dans data/processed/signaux_externes.parquet
 - Commande : .venv\Scripts\python -m src.signaux
+
+
+## Changement de direction : projet "import / e-commerce"
+- M5 abandonné : supermarché, pas d'import, signaux externes inutiles.
+- Nouveau projet en 3 modules :
+  1. Délais d'import → données USAID (vrais envois internationaux)
+  2. Demande → Online Retail II (vrai e-commerce)
+  3. Décision → quand et combien commander, selon l'origine
+
+## Module 1 : Préparation des données USAID
+- 10 324 envois (2006-2015), surtout vers l'Afrique
+- Texte réparé avec ftfy (ex : "CÃ´te" → "Côte d'Ivoire")
+- Pays d'origine trouvé à partir du nom de l'usine (88 usines,
+  4 inconnues → 17 envois sans pays)
+- Nouvelles colonnes : pays_origine, region_origine, retard_jours,
+  en_retard, delai_total_jours
+- Commande : .venv\Scripts\python -m src.usaid
+
+### Premiers résultats
+| Région d'origine | Envois | % en retard |
+|---|---|---|
+| Asie | 8 214 | 13,9 % |
+| Europe | 1 636 | 2,4 % |
+| Afrique | 184 | 1,1 % |
+| Amérique | 271 | 0,7 % |
+
+| Transport | % en retard |
+|---|---|
+| Bateau | 17,5 % |
+| Camion | 16,1 % |
+| Avion affrété | 11,5 % |
+| Avion | 9,6 % |
+
+- Attention : lien ≠ cause (l'Asie = surtout génériques indiens).

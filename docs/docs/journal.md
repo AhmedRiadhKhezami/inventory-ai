@@ -314,3 +314,28 @@ fenêtre de 180 jours, décision 30 jours avant la date prévue)
 
 - L'historique aide au global et pour les entrepôts en 2013, pas en 2014.
 - AUC usine 2014 peu fiable : seulement ~18 retards.
+
+## Module 1 : Recherche d'amélioration du modèle de retard (20+ essais)
+Évalués sur 2012, 2013, 2014 (moyenne 2013-2014)
+
+| Idée | AUC moyenne |
+|---|---|
+| Baseline | 0,744 |
+| R1 | 0,763 |
+| + historique 6 mois | 0,787 |
+| + historique 2 mois et 6 mois (R2) | 0,798 ← meilleur |
+| + charge prévue (même jour, fin de mois) | 0,761 |
+| + envois déjà en retard à la décision | 0,776 |
+| + signaux externes | 0,764 |
+| 2 modèles séparés usine/entrepôt | 0,802 (pas stable) |
+| Modèle plus prudent + poids récents | 0,789 |
+| Cible "gros retards" (> 7 ou > 14 jours) | 0,72 à 0,78 |
+
+### Découvertes
+- Entrepôts 2013-2014 : 1 294 lignes mais 443 envois réels (date + pays) ;
+  88 % des lignes d'un même envoi ont le même résultat.
+- Test "triche" (vrai % de retard du même mois) : AUC entrepôt = 0,65 seulement.
+  Il faut "même mois ET même pays" pour 0,81 → causes non présentes
+  dans les données (stock d'entrepôt, incidents de transport).
+- Signaux externes : liés aux retards par mois, mais déjà contenus dans
+  le % de retard des 2 derniers mois → pas de gain pour le modèle.

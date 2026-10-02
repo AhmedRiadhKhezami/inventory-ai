@@ -20,12 +20,16 @@ NUMERIQUES = [
     "Line Item Quantity", "Line Item Value", "Pack Price", "Unit Price",
     "delai_prevu_jours", "mois_prevu",
 ]
-HISTORIQUE = [
-    "hist_retard_global", "hist_retard_pays", "hist_retard_fournisseur",
-    "hist_retard_mode", "hist_nb_envois_pays",
-]
+
+
+def noms_historique(suffixe):
+    return [f"hist_retard_global{suffixe}", f"hist_retard_pays{suffixe}",
+            f"hist_retard_fournisseur{suffixe}", f"hist_retard_mode{suffixe}",
+            f"hist_nb_envois_pays{suffixe}"]
+
+
 FEATURES_R1 = CATEGORIES + NUMERIQUES
-FEATURES_R1B = FEATURES_R1 + HISTORIQUE
+FEATURES_R2 = FEATURES_R1 + noms_historique("_60") + noms_historique("_180")
 
 PARAMS = dict(n_estimators=300, learning_rate=0.03, num_leaves=15,
               min_child_samples=30, verbose=-1)
@@ -50,7 +54,7 @@ def charger():
     return df.reset_index(drop=True)
 
 
-def ajouter_historique(df, jours_avant=30, fenetre=180):
+def ajouter_historique(df, fenetre, suffixe, jours_avant=30):
     """Pour chaque envoi : % de retard récent, calculé SEULEMENT avec les envois
     déjà livrés à la date de décision (= date prévue - jours_avant)."""
     df = df.copy()
@@ -75,11 +79,8 @@ def ajouter_historique(df, jours_avant=30, fenetre=180):
         m.append(taux(connu & (mode == mode[i])))
         charge.append(meme_pays.sum())
 
-    df["hist_retard_global"] = g
-    df["hist_retard_pays"] = p
-    df["hist_retard_fournisseur"] = v
-    df["hist_retard_mode"] = m
-    df["hist_nb_envois_pays"] = charge
+    for nom, valeurs in zip(noms_historique(suffixe), [g, p, v, m, charge]):
+        df[nom] = valeurs
     return df
 
 
@@ -128,7 +129,9 @@ if __name__ == "__main__":
     mlflow.set_tracking_uri("sqlite:///mlflow.db")
     mlflow.set_experiment("retard-import")
 
-    df = ajouter_historique(charger())
+    df = charger()
+    df = ajouter_historique(df, fenetre=60, suffixe="_60")
+    df = ajouter_historique(df, fenetre=180, suffixe="_180")
 
     for nom_test, annee in TESTS.items():
         train = df[df["annee"] < annee]
@@ -139,7 +142,7 @@ if __name__ == "__main__":
         r = mesurer(test["en_retard"], risque, seuil) | auc_par_mode(test, risque)
         afficher("Baseline", nom_test, r)
 
-        for nom_modele, features in [("R1", FEATURES_R1), ("R1B", FEATURES_R1B)]:
+        for nom_modele, features in [("R1", FEATURES_R1), ("R2", FEATURES_R2)]:
             with mlflow.start_run(run_name=f"{nom_modele} - {nom_test}"):
                 risque, _ = modele_lgbm(train, test, features)
                 r = mesurer(test["en_retard"], risque, seuil) | auc_par_mode(test, risque)

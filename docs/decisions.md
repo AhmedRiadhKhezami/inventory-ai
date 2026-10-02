@@ -225,3 +225,14 @@
 ## Chemins des fichiers à partir de la racine du projet
 - RACINE = Path(__file__).resolve().parent.parent
 - Le code marche depuis le terminal ET depuis les notebooks.
+
+## Modèle de retard retenu : R2
+- R2 = R1 + historique de retard sur 60 et 180 jours.
+- AUC moyenne 0,798 contre 0,744 (baseline) : +7 %.
+- Entrepôts : plafond ≈ 0,58, prouvé comme limite des données
+  (test "triche" à 0,65), pas comme limite du modèle.
+
+## Rôle des signaux externes dans le module retard
+- Pas d'apport en prévision quand l'historique récent est disponible.
+- Utiles pour : stress test (scénarios de crise) et nouveau commerçant
+  sans historique.

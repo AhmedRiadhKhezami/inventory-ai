@@ -188,3 +188,9 @@
 - Surprenant (l'entrepôt est plus proche du client).
 - Hypothèses : dates promises trop serrées, ou stock absent de l'entrepôt.
 - Indice très fort pour le modèle, à discuter dans le mémoire.
+
+## Mesures du modèle de retard : AUC, rappel, précision
+- Seulement ~15 % des envois sont en retard : le "% de bonnes réponses"
+  est trompeur (un modèle qui dit toujours "à l'heure" aurait ~85 %).
+- AUC = mesure principale. Rappel et précision = lecture business
+  (retards ratés → ruptures ; fausses alertes → argent bloqué).

@@ -278,3 +278,18 @@ Cause : les ventes utilisées étaient trop vieilles (1 mois de retard).
 - AUC moyenne à battre : 0,744
 - Défaut : trop d'alertes (~45 % des envois), 2 alertes sur 3 fausses
 - Commande : .venv\Scripts\python -m src.retard
+
+
+## Module 1 : LightGBM R1 (sans signaux externes)
+- 18 informations connues à la commande (origine, destination,
+  transport, produit, quantité, prix, délai prévu, mois...)
+- Réglages prudents (peu de données) : num_leaves=15, min_child_samples=30
+
+| Modèle | AUC Test 1 | AUC Test 2 | AUC moyenne |
+|---|---|---|---|
+| Baseline | 0,669 | 0,818 | 0,744 |
+| R1 | 0,713 | 0,813 | 0,763 |
+
+- R1 donne moins d'alertes (31 % et 29 % au lieu de 48 % et 41 %),
+  donc rappel plus bas : comparaison du rappel non juste (seuils différents).
+- Essais enregistrés dans MLflow (expérience "retard-import").

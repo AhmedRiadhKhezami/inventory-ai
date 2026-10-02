@@ -200,3 +200,15 @@
   + région d'origine. Moyenne générale si combinaison inconnue.
 - Seuil d'alerte = taux moyen de retard du passé.
 - Objectif du vrai modèle : AUC > 0,744 et moins de fausses alertes.
+
+
+## Comparer les modèles de retard avec l'AUC
+- Le rappel et la précision dépendent du seuil d'alerte (la "sensibilité").
+- Avec le même seuil, deux modèles ne donnent pas le même nombre
+  d'alertes : comparer leur rappel n'est pas juste.
+- L'AUC compare les modèles pour tous les seuils.
+- Le seuil sera choisi dans le moteur de décision, selon le coût
+  d'un retard raté contre le coût d'une fausse alerte.
+
+## Pas de coût de transport, assurance ni poids dans le modèle
+- Souvent connus seulement après l'envoi → risque de triche.

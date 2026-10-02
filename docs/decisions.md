@@ -194,3 +194,9 @@
   est trompeur (un modèle qui dit toujours "à l'heure" aurait ~85 %).
 - AUC = mesure principale. Rappel et précision = lecture business
   (retards ratés → ruptures ; fausses alertes → argent bloqué).
+
+  ## Baseline du modèle de retard
+- % de retard historique par combinaison usine/entrepôt + transport
+  + région d'origine. Moyenne générale si combinaison inconnue.
+- Seuil d'alerte = taux moyen de retard du passé.
+- Objectif du vrai modèle : AUC > 0,744 et moins de fausses alertes.

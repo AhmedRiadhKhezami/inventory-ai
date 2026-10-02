@@ -264,3 +264,17 @@ Cause : les ventes utilisées étaient trop vieilles (1 mois de retard).
   les autres dates "14-Nov-06". lire_date lit maintenant les 2 formats.
   Date de commande manquante : 100 % → 50,2 %
   (= envois From RDC, sans commande fournisseur, + "Date Not Captured")
+
+  ## Module 1 : Baseline du modèle de retard
+- Règle : risque = % de retard du passé pour la même combinaison
+  (usine/entrepôt + transport + région d'origine)
+- Alerte si risque > moyenne du passé
+
+| Test | Retards réels | AUC | Rappel | Précision | Alertes |
+|---|---|---|---|---|---|
+| Test 1 (2013) | 17,9 % | 0,669 | 75,0 % | 28,0 % | 48,0 % |
+| Test 2 (2014) | 15,4 % | 0,818 | 90,3 % | 34,4 % | 40,6 % |
+
+- AUC moyenne à battre : 0,744
+- Défaut : trop d'alertes (~45 % des envois), 2 alertes sur 3 fausses
+- Commande : .venv\Scripts\python -m src.retard

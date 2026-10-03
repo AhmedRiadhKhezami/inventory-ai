@@ -339,3 +339,9 @@ fenêtre de 180 jours, décision 30 jours avant la date prévue)
   dans les données (stock d'entrepôt, incidents de transport).
 - Signaux externes : liés aux retards par mois, mais déjà contenus dans
   le % de retard des 2 derniers mois → pas de gain pour le modèle.
+
+  ## Module 1 : Tests anti-triche de l'historique
+- tests/test_retard.py : 2 tests sur ajouter_historique
+  - le % de retard utilise seulement les envois arrivés avant la décision
+  - changer le résultat d'envois arrivés après la décision ne change rien
+- Total : 8 tests (8 passed)

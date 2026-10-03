@@ -236,3 +236,8 @@
 - Pas d'apport en prévision quand l'historique récent est disponible.
 - Utiles pour : stress test (scénarios de crise) et nouveau commerçant
   sans historique.
+
+  ## Tester l'historique contre la triche
+- Les indices historiques sont la partie la plus risquée du modèle de
+  retard : une erreur de signe (< au lieu de <=) ferait voir le futur
+  sans que les résultats le montrent.

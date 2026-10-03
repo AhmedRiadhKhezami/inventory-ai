@@ -241,3 +241,9 @@
 - Les indices historiques sont la partie la plus risquée du modèle de
   retard : une erreur de signe (< au lieu de <=) ferait voir le futur
   sans que les résultats le montrent.
+
+
+  ## Marge de retard : méthode simple par groupe
+- Plus petite erreur et ~90 % des envois couverts, comme promis.
+- LightGBM ne fait pas mieux (82 % seulement en 2013).
+- Règle : on garde ce qui marche le mieux, pas le plus compliqué.

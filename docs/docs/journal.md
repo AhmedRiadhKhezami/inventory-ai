@@ -345,3 +345,15 @@ fenêtre de 180 jours, décision 30 jours avant la date prévue)
   - le % de retard utilise seulement les envois arrivés avant la décision
   - changer le résultat d'envois arrivés après la décision ne change rien
 - Total : 8 tests (8 passed)
+
+## Module 1 : Marge de retard en jours (P90)
+- Marge = le retard que 9 envois sur 10 n'ont pas dépassé,
+  par type d'envoi (usine/entrepôt + transport + région)
+- Test 2013 : marge moyenne 6,9 jours, 89,8 % des envois couverts
+- Test 2014 : marge moyenne 6,2 jours, 91,8 % des envois couverts
+- Plus grandes marges : usine + bateau + Asie (31 j),
+  entrepôt + avion + Europe (27 j), entrepôt + camion + Europe (22 j)
+- Usine + avion : 0 jour (presque toujours à l'heure)
+- Limite : peu d'envois par bateau → marge moins sûre
+- 3 méthodes testées (globale, par groupe, LightGBM) :
+  la méthode par groupe est la meilleure

@@ -247,3 +247,12 @@
 - Plus petite erreur et ~90 % des envois couverts, comme promis.
 - LightGBM ne fait pas mieux (82 % seulement en 2013).
 - Règle : on garde ce qui marche le mieux, pas le plus compliqué.
+
+
+## Module 3 – D1 : point de commande avec marge de retard
+
+- **Choix :** ajouter la marge de retard P90 (module 2) au délai prévu dans le point de commande.
+- **Pourquoi :** le délai annoncé par le fournisseur est souvent dépassé ; sans marge, l'outil recommande d'attendre alors que la rupture est probable.
+- **Choix :** niveau de service 95 % (z = 1.65) pour le stock de sécurité.
+- **Pourquoi :** valeur classique en gestion de stock, simple à expliquer ; pourra être réglée par le commerçant plus tard.
+- **Alternative écartée :** utiliser seulement le délai prévu (méthode classique) → sous-estime le risque pour les routes lentes comme Asie + bateau.

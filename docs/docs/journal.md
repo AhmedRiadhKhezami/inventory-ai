@@ -357,3 +357,16 @@ fenêtre de 180 jours, décision 30 jours avant la date prévue)
 - Limite : peu d'envois par bateau → marge moins sûre
 - 3 méthodes testées (globale, par groupe, LightGBM) :
   la méthode par groupe est la meilleure
+
+  ## Module 3 – Décision : D1 Quand commander
+
+- Création de `src/decision.py` : stock de sécurité, point de commande, décision « commander ou non ».
+- Formule : seuil = demande/jour × (délai prévu + marge retard P90) + stock de sécurité.
+- Stock de sécurité = 1.65 × écart-type/jour × racine(jours couverts) → couvre ~95 % des variations de demande.
+- Le stock déjà en route est ajouté au stock actuel avant de comparer au seuil.
+- Exemple (coques, Asie, bateau : 20 ventes/jour, délai 35 j, marge P90 31 j, stock 900) :
+  - sans marge retard : seuil 759 → ne pas commander ;
+  - avec marge P90 : seuil 1 400 → commander.
+- Sans la marge, le stock tient ~45 jours mais la commande peut arriver après 66 jours → ~3 semaines de rupture évitées.
+- 3 tests ajoutés dans `tests/test_decision.py`.
+- Ajout de `pytest.ini` (pythonpath = .) : `pytest` trouvait pas le dossier `src` quand il était lancé sans `python -m`.

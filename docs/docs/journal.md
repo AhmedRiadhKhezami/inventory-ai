@@ -370,3 +370,16 @@ fenêtre de 180 jours, décision 30 jours avant la date prévue)
 - Sans la marge, le stock tient ~45 jours mais la commande peut arriver après 66 jours → ~3 semaines de rupture évitées.
 - 3 tests ajoutés dans `tests/test_decision.py`.
 - Ajout de `pytest.ini` (pythonpath = .) : `pytest` trouvait pas le dossier `src` quand il était lancé sans `python -m`.
+
+
+## Module 3 – Décision : D2 Combien commander
+
+- Ajout dans `src/decision.py` : EOQ (quantité économique), coût annuel, quantité finale.
+- Règles appliquées dans l'ordre : manque pour remonter au seuil → EOQ → plafond de jours de ventes → MOQ usine → arrondi au carton supérieur.
+- Coût de stockage = 25 % du prix d'achat par an.
+- Exemple inventé (coques de téléphone : 20/jour, frais 400 €/commande, 2 €/pièce, MOQ 1 000, carton 100) :
+  - EOQ ≈ 3 418 → 3 500 commandées sans plafond ;
+  - avec plafond 120 jours → 2 400 commandées.
+- Coût par an : 500 → 5 965 € ; 1 000 → 3 170 € ; 2 400 → 1 817 € ; 3 400 → 1 709 € (minimum) ; 7 300 → 2 225 €.
+- La courbe est plate autour de l'EOQ : le plafond coûte +108 €/an mais garde 2 200 € de trésorerie.
+- 3 tests D2 ajoutés → 14 tests au total, tous réussis.

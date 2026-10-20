@@ -256,3 +256,13 @@
 - **Choix :** niveau de service 95 % (z = 1.65) pour le stock de sécurité.
 - **Pourquoi :** valeur classique en gestion de stock, simple à expliquer ; pourra être réglée par le commerçant plus tard.
 - **Alternative écartée :** utiliser seulement le délai prévu (méthode classique) → sous-estime le risque pour les routes lentes comme Asie + bateau.
+
+## Module 3 – D2 : quantité = EOQ + règles d'import
+
+- **Choix :** partir de l'EOQ pour équilibrer frais de commande (fret, douane) et coût de stockage.
+- **Pourquoi :** pour un importateur, les frais fixes par commande sont élevés ; commander trop petit coûte très cher (500 pièces → 3,5 fois le coût minimum).
+- **Choix :** ajouter MOQ, carton et plafond de jours de ventes.
+- **Pourquoi :** ce sont les contraintes réelles d'un petit importateur ; l'EOQ seule ignore la trésorerie.
+- **Choix :** le plafond ne passe jamais sous le manque ni sous le MOQ.
+- **Pourquoi :** économiser de la trésorerie ne doit jamais créer une rupture ou une commande refusée par l'usine.
+- **Limite :** frais, prix et taux de stockage sont des valeurs d'exemple ; ils seront des paramètres du commerçant dans l'app.

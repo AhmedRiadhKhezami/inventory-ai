@@ -56,7 +56,9 @@ def charger():
 
 def ajouter_historique(df, fenetre, suffixe, jours_avant=30):
     """Pour chaque envoi : % de retard récent, calculé SEULEMENT avec les envois
-    déjà livrés à la date de décision (= date prévue - jours_avant)."""
+    déjà livrés à la date de décision (= date prévue - jours_avant),
+    SANS les lignes du même envoi (elles partagent presque toujours le résultat).
+    S'il n'y a pas de numéro d'envoi, chaque ligne est son propre envoi."""
     df = df.copy()
     decision = (df["date_prevue"] - pd.Timedelta(days=jours_avant)).to_numpy()
     reel = df["date_reelle"].to_numpy()
@@ -64,6 +66,10 @@ def ajouter_historique(df, fenetre, suffixe, jours_avant=30):
     pays = df["Country"].astype(str).to_numpy()
     fournisseur = df["Vendor"].astype(str).to_numpy()
     mode = df["Fulfill Via"].astype(str).to_numpy()
+    if "ASN/DN #" in df.columns:
+        envoi = df["ASN/DN #"].astype(str).to_numpy()
+    else:
+        envoi = np.arange(len(df)).astype(str)
     duree = np.timedelta64(fenetre, "D")
 
     def taux(masque):
@@ -71,7 +77,8 @@ def ajouter_historique(df, fenetre, suffixe, jours_avant=30):
 
     g, p, v, m, charge = [], [], [], [], []
     for i in range(len(df)):
-        connu = (reel < decision[i]) & (reel >= decision[i] - duree)
+        connu = ((reel < decision[i]) & (reel >= decision[i] - duree)
+                 & (envoi != envoi[i]))
         meme_pays = connu & (pays == pays[i])
         g.append(taux(connu))
         p.append(taux(meme_pays))
@@ -82,7 +89,6 @@ def ajouter_historique(df, fenetre, suffixe, jours_avant=30):
     for nom, valeurs in zip(noms_historique(suffixe), [g, p, v, m, charge]):
         df[nom] = valeurs
     return df
-
 
 def mesurer(vrai, risque, seuil):
     """AUC, rappel, précision, et % d'envois qui reçoivent une alerte."""

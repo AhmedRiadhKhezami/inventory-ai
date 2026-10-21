@@ -425,3 +425,12 @@ fenêtre de 180 jours, décision 30 jours avant la date prévue)
   - D (économie) 26,4 % ; E (géopolitique + GSCPI) 26,3 % → toujours pas de gain ;
   - biais du modèle C : −4,2 % (prévoit un peu trop bas).
 - Ajout de `src/baseline_m5.py` (règle simple sur les 3 périodes) ; ajout du test final dans `src/train.py` et `src/retard.py`.
+
+## Correction : fuite dans l'historique des retards
+
+- Problème : 690 lignes (9,4 %) sont livrées plus de 30 jours avant la date prévue, donc avant leur propre date de décision. Leur résultat (et celui des lignes du même envoi) entrait dans leur propre historique.
+- Correction dans `ajouter_historique` : l'historique exclut les lignes du même envoi (`ASN/DN #`).
+- Nouveau test : `test_historique_sans_son_propre_envoi`.
+- R2 (AUC) avant → après : 2013 0,765 → 0,755 ; 2014 0,830 → 0,829 ; 2015 0,807 → 0,805.
+- Règle simple et R1 inchangés. Conclusions inchangées. Module 3 non touché.
+- Précision : l'historique « mode » est calculé par type de livraison (usine directe / entrepôt), pas par mode de transport.

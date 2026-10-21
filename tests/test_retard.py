@@ -32,3 +32,22 @@ def test_historique_ne_change_pas_si_le_futur_change():
     df2 = ajouter_historique(futur_change, fenetre=180, suffixe="_180")
 
     assert df1.loc[4, "hist_retard_global_180"] == df2.loc[4, "hist_retard_global_180"]
+
+
+    import pandas as pd
+
+from src.retard import ajouter_historique
+
+
+def test_historique_sans_son_propre_envoi():
+    df = pd.DataFrame({
+        "date_prevue": pd.to_datetime(["2015-03-01", "2015-03-01", "2015-01-20"]),
+        "date_reelle": pd.to_datetime(["2015-01-01", "2015-01-01", "2015-01-25"]),
+        "en_retard": [0, 0, 1],
+        "Country": ["X", "X", "X"],
+        "Vendor": ["V", "V", "V"],
+        "Fulfill Via": ["Direct Drop", "Direct Drop", "Direct Drop"],
+        "ASN/DN #": ["A1", "A1", "B1"],
+    })
+    out = ajouter_historique(df, fenetre=60, suffixe="_60")
+    assert out.loc[0, "hist_retard_global_60"] == 1.0

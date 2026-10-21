@@ -294,3 +294,10 @@
 - **Pourquoi :** choisir un modèle avec la période d'examen la transforme en test d'entraînement ; le résultat ne serait plus honnête.
 - **Constat :** pour le retard, une règle simple par route fait presque aussi bien que LightGBM sur une année nouvelle → le module de décision s'appuie sur la marge P90 par route, qui reste fiable (94,1 %).
 - **Constat :** pour la demande, LightGBM bat la règle simple de 3,3 points sur la période finale ; les indicateurs externes n'aident pas (RQ1 confirmée).
+
+
+## Historique des retards : exclure le même envoi
+
+- **Choix :** l'historique récent d'une ligne exclut toutes les lignes du même envoi (`ASN/DN #`).
+- **Pourquoi :** les lignes d'un même envoi partagent presque toujours le même résultat ; une ligne livrée avant sa date de décision donnait sinon sa propre réponse au modèle.
+- **Effet :** baisse de 0,001 à 0,010 de l'AUC de R2 ; les résultats corrigés remplacent les anciens dans le document.

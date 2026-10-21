@@ -395,3 +395,18 @@ fenêtre de 180 jours, décision 30 jours avant la date prévue)
 - Le retard coûte 1 495 €/an à Chine bateau (tampon 368 € + ventes perdues 1 127 €).
 - Avantage de Chine bateau sur Turquie : 5 110 € sur le prix, mais 3 484 € en coût total → le retard mange presque un tiers de l'économie.
 - 3 tests D3 ajoutés → 17 tests au total.
+
+
+## Module 3 – Décision : D4 Rentabilité et test de crise
+
+- Ajout dans `src/decision.py` : bénéfice par an, scénario de crise, point de bascule.
+- Bénéfice = ventes de l'année − coût total (D3) ; rentable si bénéfice > 0.
+- Crise réelle mesurée sur USAID (juillet 2010 – juin 2011, pic du GSCPI = indice de pression sur les chaînes logistiques mondiales) : envois usine→bateau en retard 9,9 % en temps normal → 31,6 % en crise, soit ×3,2.
+- Test de crise : les gros retards (au-delà de la marge P90) deviennent 3,2 fois plus fréquents.
+- Point de bascule = plus petit facteur de crise qui change le fournisseur recommandé (recherche de ×1,0 à ×10 par pas de 0,1).
+- Résultats (prix et produits inventés) :
+  - coque à 10 € : Chine bateau en temps normal et en crise ; bascule vers la Turquie à ×4,1 ;
+  - coque à 20 € : Chine bateau en temps normal (20 003 €), Turquie en crise (22 060 € contre 25 623 € pour la Chine) ; bascule à ×1,9.
+- Tous les fournisseurs restent rentables pour ces deux produits ; un prix de vente de 2,20 € rend toute commande non rentable.
+- 3 tests D4 ajoutés → 20 tests au total.
+- Module 3 terminé : quand commander (D1), combien (D2), chez qui (D3), rentabilité et crise (D4).

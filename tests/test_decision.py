@@ -1,7 +1,8 @@
 from src.decision import (point_de_commande, faut_il_commander,
                           quantite_economique, cout_annuel, quantite_a_commander,
                           cout_total_fournisseur, choisir_fournisseur,
-                          FOURNISSEURS_EXEMPLE)
+                          FOURNISSEURS_EXEMPLE, rentabilite, scenario_crise,
+                          point_de_bascule)
 
 
 # ---------- D1 ----------
@@ -62,3 +63,23 @@ def test_sans_retard_pas_de_ventes_perdues():
 def test_premier_du_tableau_est_le_moins_cher():
     tableau = choisir_fournisseur(FOURNISSEURS_EXEMPLE, 20, 6, 10.0)
     assert tableau["total"].iloc[0] == tableau["total"].min()
+
+
+# ---------- D4 ----------
+
+def test_prix_trop_bas_pas_rentable():
+    tableau = choisir_fournisseur(FOURNISSEURS_EXEMPLE, 20, 6, 2.2)
+    tableau = rentabilite(tableau, 20, 2.2)
+    assert not tableau["rentable"].any()
+
+
+def test_crise_ne_modifie_pas_les_vrais_chiffres():
+    scenario_crise(FOURNISSEURS_EXEMPLE, 3.2)
+    assert FOURNISSEURS_EXEMPLE["Chine bateau"]["p_depasse"] == 0.10
+
+
+def test_produit_cher_bascule_plus_vite():
+    facteur_10, _ = point_de_bascule(FOURNISSEURS_EXEMPLE, 20, 6, 10.0)
+    facteur_20, choix_20 = point_de_bascule(FOURNISSEURS_EXEMPLE, 20, 6, 20.0)
+    assert facteur_20 < facteur_10
+    assert choix_20 == "Turquie camion"

@@ -1,3 +1,5 @@
+import copy
+
 import numpy as np
 import pandas as pd
 
@@ -122,24 +124,67 @@ FOURNISSEURS_EXEMPLE = {
 }
 
 
+# ---------- D4 : EST-CE RENTABLE, ET SI UNE CRISE ARRIVE ? ----------
+
+# Crise réelle mesurée sur USAID (juillet 2010 - juin 2011, pic du GSCPI) :
+#   usine -> bateau : 9.9% en retard en temps normal, 31.6% pendant la crise -> x3.2
+CRISE_REELLE = 3.2
+
+
+def rentabilite(tableau, demande_jour, prix_vente):
+    """Ajoute le bénéfice par an et dit si c'est rentable."""
+    t = tableau.copy()
+    chiffre_affaires = demande_jour * 365 * prix_vente
+    t["benefice"] = (chiffre_affaires - t["total"]).astype(int)
+    t["rentable"] = t["benefice"] > 0
+    return t
+
+
+def scenario_crise(fournisseurs, facteur):
+    """Copie des fournisseurs où les gros retards arrivent 'facteur' fois plus souvent."""
+    crise = copy.deepcopy(fournisseurs)
+    for f in crise.values():
+        f["p_depasse"] = min(f["p_depasse"] * facteur, 1.0)
+    return crise
+
+
+def point_de_bascule(fournisseurs, demande_jour, ecart_type_jour, prix_vente,
+                     facteur_max=10, pas=0.1):
+    """Plus petit facteur de crise qui change le fournisseur recommandé."""
+    choix_normal = choisir_fournisseur(fournisseurs, demande_jour,
+                                       ecart_type_jour, prix_vente).index[0]
+    for facteur in np.arange(1, facteur_max + pas, pas):
+        crise = scenario_crise(fournisseurs, facteur)
+        choix = choisir_fournisseur(crise, demande_jour, ecart_type_jour,
+                                    prix_vente).index[0]
+        if choix != choix_normal:
+            return round(float(facteur), 1), choix
+    return None, choix_normal
+
+
 if __name__ == "__main__":
     demande_jour = 20      # ventes par jour (module 1)
     ecart_type_jour = 6    # variation des ventes par jour
-    prix_vente = 10.0      # prix de vente d'une coque (€), inventé
 
-    tableau = choisir_fournisseur(FOURNISSEURS_EXEMPLE, demande_jour,
-                                  ecart_type_jour, prix_vente)
-    print("Coût total sur un an (€) :")
-    print(tableau)
+    for prix_vente in [10.0, 20.0]:     # deux produits inventés
+        print(f"\n===== Produit vendu {prix_vente:.0f} € =====")
 
-    par_prix = min(FOURNISSEURS_EXEMPLE,
-                   key=lambda n: FOURNISSEURS_EXEMPLE[n]["prix"]
-                   + FOURNISSEURS_EXEMPLE[n]["transport_unite"])
-    print(f"\nChoix par prix seul   : {par_prix}")
-    print(f"Choix par coût total  : {tableau.index[0]}")
+        normal = choisir_fournisseur(FOURNISSEURS_EXEMPLE, demande_jour,
+                                     ecart_type_jour, prix_vente)
+        normal = rentabilite(normal, demande_jour, prix_vente)
+        print("Temps normal :")
+        print(normal[["total", "benefice", "rentable"]])
 
-    a, b = tableau.index[0], tableau.index[1]
-    ecart_achat = tableau.loc[b, "achat"] - tableau.loc[a, "achat"]
-    ecart_total = tableau.loc[b, "total"] - tableau.loc[a, "total"]
-    print(f"Avantage de {a} sur {b} : {ecart_achat} € sur le prix, "
-          f"mais seulement {ecart_total} € en coût total")
+        crise = choisir_fournisseur(scenario_crise(FOURNISSEURS_EXEMPLE, CRISE_REELLE),
+                                    demande_jour, ecart_type_jour, prix_vente)
+        crise = rentabilite(crise, demande_jour, prix_vente)
+        print(f"Crise (retards x{CRISE_REELLE}) :")
+        print(crise[["total", "benefice", "rentable"]])
+
+        facteur, nouveau = point_de_bascule(FOURNISSEURS_EXEMPLE, demande_jour,
+                                            ecart_type_jour, prix_vente)
+        print(f"Choix normal : {normal.index[0]} | choix en crise : {crise.index[0]}")
+        if facteur is None:
+            print("Point de bascule : aucun (jusqu'à x10)")
+        else:
+            print(f"Point de bascule : retards x{facteur} -> passer à {nouveau}")

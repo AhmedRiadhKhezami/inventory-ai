@@ -277,3 +277,13 @@
 - **Choix :** chaque fournisseur est évalué avec sa propre EOQ (quantité économique de commande).
 - **Pourquoi :** comparaison juste ; chaque fournisseur est utilisé au mieux.
 - **Limite :** prix, frais et marge commerciale sont inventés ; les routes USAID sont des produits de santé, pas des coques.
+
+
+## Module 3 – D4 : test de crise basé sur une crise réelle
+
+- **Choix :** facteur de crise ×3,2, mesuré sur USAID pendant le pic du GSCPI (juillet 2010 – juin 2011).
+- **Pourquoi :** un scénario tiré des données est plus crédible qu'un facteur inventé.
+- **Choix :** donner un point de bascule plutôt qu'un seul choix.
+- **Pourquoi :** le commerçant obtient une règle d'action (« passe à la Turquie si les retards doublent »), utile quand la situation change.
+- **Constat :** le point de bascule dépend du prix de vente ; plus le produit rapporte, plus une vente perdue coûte cher, plus il faut changer tôt.
+- **Limite :** en crise, seule la fréquence des gros retards est augmentée ; leur durée et la marge P90 restent celles du temps normal. Le facteur ×3,2 vient du transport par bateau, pas spécifiquement de l'Asie.

@@ -383,3 +383,15 @@ fenêtre de 180 jours, décision 30 jours avant la date prévue)
 - Coût par an : 500 → 5 965 € ; 1 000 → 3 170 € ; 2 400 → 1 817 € ; 3 400 → 1 709 € (minimum) ; 7 300 → 2 225 €.
 - La courbe est plate autour de l'EOQ : le plafond coûte +108 €/an mais garde 2 200 € de trésorerie.
 - 3 tests D2 ajoutés → 14 tests au total, tous réussis.
+
+
+## Module 3 – Décision : D3 Chez qui commander
+
+- Ajout dans `src/decision.py` : coût total par fournisseur sur un an, et classement des fournisseurs.
+- Coût total = achat + transport, frais de commande + stockage (EOQ = quantité économique de commande), stock tampon contre le retard (marge P90 + sécurité), ventes perdues quand le retard dépasse la marge.
+- Chiffres de retard tirés de USAID par route : usine→bateau→Asie 18,6 % en retard, P90 = 31 j, dépassement moyen 32,6 j ; usine→avion→Asie 8,8 %, retard moyen 19,1 j ; usine→camion→Europe 0 % (139 envois).
+- Prix, frais et noms de pays inventés (Chine bateau, Chine avion, Turquie camion), prix de vente 10 €.
+- Résultat sur un an : Chine bateau 18 576 € ; Turquie camion 22 060 € ; Chine avion 22 919 €.
+- Le retard coûte 1 495 €/an à Chine bateau (tampon 368 € + ventes perdues 1 127 €).
+- Avantage de Chine bateau sur Turquie : 5 110 € sur le prix, mais 3 484 € en coût total → le retard mange presque un tiers de l'économie.
+- 3 tests D3 ajoutés → 17 tests au total.

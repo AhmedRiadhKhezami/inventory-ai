@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 
 # z = 1.65 -> on veut couvrir 95% des variations de la demande
 Z_SERVICE = 1.65
@@ -62,32 +63,83 @@ def quantite_a_commander(stock_total, seuil, demande_jour, frais_par_commande,
     return quantite, round(eoq), round(manque)
 
 
+# ---------- D3 : CHEZ QUI commander ----------
+
+def cout_total_fournisseur(f, demande_jour, ecart_type_jour, prix_vente,
+                           taux_stockage=0.25):
+    """Coût total sur un an pour un fournisseur, en 4 parties."""
+    demande_an = demande_jour * 365
+    cout_unite = f["prix"] + f["transport_unite"]
+
+    # 1. Achat + transport de toutes les pièces de l'année
+    achat = demande_an * cout_unite
+
+    # 2. Frais de commande + stockage normal (avec la quantité EOQ)
+    eoq = quantite_economique(demande_jour, f["frais_commande"], cout_unite,
+                              taux_stockage)
+    commandes_stockage = cout_annuel(eoq, demande_jour, f["frais_commande"],
+                                     cout_unite, taux_stockage)
+
+    # 3. Stock tampon pour se protéger du retard (marge P90 + sécurité)
+    pieces_tampon = (demande_jour * f["marge_p90"]
+                     + stock_securite(ecart_type_jour, f["delai"] + f["marge_p90"]))
+    tampon = pieces_tampon * cout_unite * taux_stockage
+
+    # 4. Ventes perdues quand le retard dépasse même la marge
+    nb_commandes = demande_an / eoq
+    pieces_perdues = nb_commandes * f["p_depasse"] * demande_jour * f["depassement_jours"]
+    ventes_perdues = pieces_perdues * (prix_vente - cout_unite)
+
+    total = achat + commandes_stockage + tampon + ventes_perdues
+    return {"achat": achat, "commandes_stockage": commandes_stockage,
+            "tampon_retard": tampon, "ventes_perdues": ventes_perdues,
+            "total": total}
+
+
+def choisir_fournisseur(fournisseurs, demande_jour, ecart_type_jour, prix_vente):
+    """Tableau des coûts, du moins cher au plus cher."""
+    lignes = {nom: cout_total_fournisseur(f, demande_jour, ecart_type_jour, prix_vente)
+              for nom, f in fournisseurs.items()}
+    tableau = pd.DataFrame(lignes).T.round(0).astype(int)
+    return tableau.sort_values("total")
+
+
+# Les chiffres de retard viennent de USAID (module 2), par route :
+#   usine -> bateau -> Asie  : 18.6% en retard, marge P90 = 31 j, dépassement moyen 32.6 j
+#   usine -> avion  -> Asie  :  8.8% en retard, marge P90 = 0 j,  retard moyen 19.1 j
+#   usine -> camion -> Europe:  0.0% en retard (139 envois)
+# Les prix, frais et noms de pays sont inventés pour l'exemple.
+FOURNISSEURS_EXEMPLE = {
+    "Chine bateau": {"prix": 2.00, "transport_unite": 0.10, "frais_commande": 400,
+                     "delai": 35, "marge_p90": 31, "p_depasse": 0.10,
+                     "depassement_jours": 32.6},
+    "Chine avion": {"prix": 2.00, "transport_unite": 0.80, "frais_commande": 300,
+                    "delai": 10, "marge_p90": 0, "p_depasse": 0.088,
+                    "depassement_jours": 19.1},
+    "Turquie camion": {"prix": 2.60, "transport_unite": 0.20, "frais_commande": 250,
+                       "delai": 10, "marge_p90": 0, "p_depasse": 0.0,
+                       "depassement_jours": 0},
+}
+
+
 if __name__ == "__main__":
-    # Exemple : coques de téléphone, usine en Asie, bateau
-    demande_jour = 20        # ventes moyennes par jour (module 1)
-    ecart_type_jour = 6      # variation des ventes par jour
-    delai_prevu = 35         # délai annoncé par le fournisseur
-    marge_p90 = 31           # marge retard Direct + Ocean + Asia (module 2)
-    stock_actuel = 900
-    en_route = 0
-    frais_par_commande = 400 # fret + douane + frais fixes (€)
-    prix_achat = 2.0         # prix d'une coque (€)
-    moq = 1000               # minimum imposé par l'usine
-    carton = 100             # pièces par carton
+    demande_jour = 20      # ventes par jour (module 1)
+    ecart_type_jour = 6    # variation des ventes par jour
+    prix_vente = 10.0      # prix de vente d'une coque (€), inventé
 
-    commander, seuil = faut_il_commander(stock_actuel, en_route, demande_jour,
-                                         ecart_type_jour, delai_prevu, marge_p90)
-    print(f"D1 | seuil = {seuil} | stock = {stock_actuel} | commander ? {commander}")
+    tableau = choisir_fournisseur(FOURNISSEURS_EXEMPLE, demande_jour,
+                                  ecart_type_jour, prix_vente)
+    print("Coût total sur un an (€) :")
+    print(tableau)
 
-    if commander:
-        for nom, plafond in [("Sans plafond", None), ("Plafond 120 jours", 120)]:
-            q, eoq, manque = quantite_a_commander(
-                stock_actuel + en_route, seuil, demande_jour, frais_par_commande,
-                prix_achat, moq=moq, carton=carton, couverture_max_jours=plafond)
-            print(f"D2 | {nom:18s} | manque = {manque} | EOQ = {eoq} "
-                  f"| à commander = {q} ({q / demande_jour:.0f} jours de ventes)")
+    par_prix = min(FOURNISSEURS_EXEMPLE,
+                   key=lambda n: FOURNISSEURS_EXEMPLE[n]["prix"]
+                   + FOURNISSEURS_EXEMPLE[n]["transport_unite"])
+    print(f"\nChoix par prix seul   : {par_prix}")
+    print(f"Choix par coût total  : {tableau.index[0]}")
 
-    print("\nCoût par an selon la quantité commandée :")
-    for q in [500, 1000, 2400, 3400, 7300]:
-        c = cout_annuel(q, demande_jour, frais_par_commande, prix_achat)
-        print(f"  Q = {q:5d} -> {c:7.0f} €")
+    a, b = tableau.index[0], tableau.index[1]
+    ecart_achat = tableau.loc[b, "achat"] - tableau.loc[a, "achat"]
+    ecart_total = tableau.loc[b, "total"] - tableau.loc[a, "total"]
+    print(f"Avantage de {a} sur {b} : {ecart_achat} € sur le prix, "
+          f"mais seulement {ecart_total} € en coût total")

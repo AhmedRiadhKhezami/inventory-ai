@@ -1,5 +1,7 @@
 from src.decision import (point_de_commande, faut_il_commander,
-                          quantite_economique, cout_annuel, quantite_a_commander)
+                          quantite_economique, cout_annuel, quantite_a_commander,
+                          cout_total_fournisseur, choisir_fournisseur,
+                          FOURNISSEURS_EXEMPLE)
 
 
 # ---------- D1 ----------
@@ -40,3 +42,23 @@ def test_plafond_ne_coupe_jamais_le_manque():
     q, _, manque = quantite_a_commander(0, 3000, 20, 400, 2.0,
                                         couverture_max_jours=30)
     assert q >= manque
+
+
+# ---------- D3 ----------
+
+def test_plus_de_retard_coute_plus_cher():
+    f = dict(FOURNISSEURS_EXEMPLE["Chine bateau"])
+    normal = cout_total_fournisseur(f, 20, 6, 10.0)["total"]
+    f["p_depasse"] = 0.30
+    crise = cout_total_fournisseur(f, 20, 6, 10.0)["total"]
+    assert crise > normal
+
+
+def test_sans_retard_pas_de_ventes_perdues():
+    couts = cout_total_fournisseur(FOURNISSEURS_EXEMPLE["Turquie camion"], 20, 6, 10.0)
+    assert couts["ventes_perdues"] == 0
+
+
+def test_premier_du_tableau_est_le_moins_cher():
+    tableau = choisir_fournisseur(FOURNISSEURS_EXEMPLE, 20, 6, 10.0)
+    assert tableau["total"].iloc[0] == tableau["total"].min()

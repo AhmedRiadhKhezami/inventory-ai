@@ -266,3 +266,14 @@
 - **Choix :** le plafond ne passe jamais sous le manque ni sous le MOQ.
 - **Pourquoi :** économiser de la trésorerie ne doit jamais créer une rupture ou une commande refusée par l'usine.
 - **Limite :** frais, prix et taux de stockage sont des valeurs d'exemple ; ils seront des paramètres du commerçant dans l'app.
+
+
+## Module 3 – D3 : choisir le fournisseur par coût total, pas par prix
+
+- **Choix :** comparer les fournisseurs sur un coût total annuel en 4 parties (achat, commandes + stockage, tampon retard, ventes perdues).
+- **Pourquoi :** le prix affiché cache le coût du retard ; sur l'exemple, il surestime l'avantage de la Chine de 1 626 €.
+- **Choix :** risque restant = 10 % des commandes dépassent la marge P90, avec le dépassement moyen mesuré sur USAID.
+- **Pourquoi :** la marge P90 couvre 90 % des cas par construction ; il faut compter les 10 % restants.
+- **Choix :** chaque fournisseur est évalué avec sa propre EOQ (quantité économique de commande).
+- **Pourquoi :** comparaison juste ; chaque fournisseur est utilisé au mieux.
+- **Limite :** prix, frais et marge commerciale sont inventés ; les routes USAID sont des produits de santé, pas des coques.

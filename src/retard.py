@@ -8,7 +8,7 @@ from sklearn.metrics import roc_auc_score, precision_score, recall_score
 
 RACINE = Path(__file__).resolve().parent.parent
 CHEMIN = RACINE / "data" / "processed" / "usaid_clean.parquet"
-TESTS = {"Test 1": 2013, "Test 2": 2014}
+TESTS = {"Test 1": 2013, "Test 2": 2014, "Test final": 2015}
 GROUPE = ["Fulfill Via", "Shipment Mode", "region_origine"]
 
 CATEGORIES = [

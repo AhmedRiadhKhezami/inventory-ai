@@ -287,3 +287,10 @@
 - **Pourquoi :** le commerçant obtient une règle d'action (« passe à la Turquie si les retards doublent »), utile quand la situation change.
 - **Constat :** le point de bascule dépend du prix de vente ; plus le produit rapporte, plus une vente perdue coûte cher, plus il faut changer tôt.
 - **Limite :** en crise, seule la fréquence des gros retards est augmentée ; leur durée et la marge P90 restent celles du temps normal. Le facteur ×3,2 vient du transport par bateau, pas spécifiquement de l'Asie.
+
+## Évaluation finale : garder les modèles choisis avant l'examen
+
+- **Choix :** garder R2 pour le retard, même si R1 fait mieux sur 2015.
+- **Pourquoi :** choisir un modèle avec la période d'examen la transforme en test d'entraînement ; le résultat ne serait plus honnête.
+- **Constat :** pour le retard, une règle simple par route fait presque aussi bien que LightGBM sur une année nouvelle → le module de décision s'appuie sur la marge P90 par route, qui reste fiable (94,1 %).
+- **Constat :** pour la demande, LightGBM bat la règle simple de 3,3 points sur la période finale ; les indicateurs externes n'aident pas (RQ1 confirmée).

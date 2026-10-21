@@ -409,4 +409,19 @@ fenêtre de 180 jours, décision 30 jours avant la date prévue)
   - coque à 20 € : Chine bateau en temps normal (20 003 €), Turquie en crise (22 060 € contre 25 623 € pour la Chine) ; bascule à ×1,9.
 - Tous les fournisseurs restent rentables pour ces deux produits ; un prix de vente de 2,20 € rend toute commande non rentable.
 - 3 tests D4 ajoutés → 20 tests au total.
-- Module 3 terminé : quand commander (D1), combien (D2), chez qui (D3), rentabilité et crise (D4).
+- Module 3 terminé : quand commander (D1), combien (D2), chez qui (D3), rentabilité et crise (D4).  
+
+## Évaluation finale (périodes gardées de côté)
+
+- Évaluation faite une seule fois, sans changer les modèles après.
+- Retard (USAID 2015, AUC) : règle simple 0,803 ; R1 0,819 ; R2 (modèle choisi) 0,807.
+  - L'avance de R2 sur la règle tombe à +0,004 (contre +0,096 en 2013).
+  - 2015 est plus calme (11,8 % de retards contre 17,9 % en 2013) : l'historique récent apporte peu.
+  - R1 fait mieux en 2015, mais R2 reste le modèle choisi (choix fait avant l'examen).
+- Marge P90 par route (USAID 2015) : 94,1 % des envois couverts, marge moyenne 6,1 jours.
+- Demande (M5, 25 avril – 22 mai 2016, WAPE 28 jours) :
+  - règle moyenne 28 jours : 29,7 % (27,8 % et 26,8 % aux tests 1 et 2, vérification OK) ;
+  - modèle C : 26,4 % → 3,3 points de mieux ;
+  - D (économie) 26,4 % ; E (géopolitique + GSCPI) 26,3 % → toujours pas de gain ;
+  - biais du modèle C : −4,2 % (prévoit un peu trop bas).
+- Ajout de `src/baseline_m5.py` (règle simple sur les 3 périodes) ; ajout du test final dans `src/train.py` et `src/retard.py`.

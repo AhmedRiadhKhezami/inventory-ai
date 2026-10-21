@@ -8,7 +8,7 @@ from src.metrics import wape, biais
 
 CHEMIN_DONNEES = "data/processed/sales_ca1_clean.parquet"
 CHEMIN_SIGNAUX = "data/processed/signaux_externes.parquet"
-TESTS = {"Test 1": "2016-02-29", "Test 2": "2016-03-28"}
+TESTS = {"Test 1": "2016-02-29", "Test 2": "2016-03-28", "Test final": "2016-04-25"}
 PARAMS = dict(objective="tweedie", n_estimators=300, learning_rate=0.05, verbose=-1)
 
 EXPERIENCES = {"C": FEATURES_C, "D": FEATURES_D, "E": FEATURES_E}

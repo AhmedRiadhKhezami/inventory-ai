@@ -434,3 +434,11 @@ fenêtre de 180 jours, décision 30 jours avant la date prévue)
 - R2 (AUC) avant → après : 2013 0,765 → 0,755 ; 2014 0,830 → 0,829 ; 2015 0,807 → 0,805.
 - Règle simple et R1 inchangés. Conclusions inchangées. Module 3 non touché.
 - Précision : l'historique « mode » est calculé par type de livraison (usine directe / entrepôt), pas par mode de transport.
+
+
+## Retard : test des indicateurs externes (R3) + chiffres descriptifs
+
+- R3 = R2 + 13 indicateurs externes (mêmes que le modèle E de la demande), valeurs connues à la date de décision.
+- AUC R2 → R3 : 2013 0,755 → 0,742 ; 2014 0,829 → 0,827 ; 2015 0,805 → 0,765. Les indicateurs n'aident pas (RQ2, 2e partie).
+- Nouveau script `src/description_usaid.py` : taux de retard par facteur (2010–2015), corrélation mensuelle avec le GSCPI (0,45), marge P90 globale contre P90 par route, envois entrepôt, test « oracle ».
+- Correction de l'ancien brouillon : les taux de retard par facteur étaient calculés sur toutes les années (2006–2015) ; ils sont maintenant calculés sur 2010–2015, comme les modèles.

@@ -8,6 +8,7 @@ from sklearn.metrics import roc_auc_score, precision_score, recall_score
 
 RACINE = Path(__file__).resolve().parent.parent
 CHEMIN = RACINE / "data" / "processed" / "usaid_clean.parquet"
+CHEMIN_SIGNAUX = RACINE / "data" / "processed" / "signaux_externes.parquet"
 TESTS = {"Test 1": 2013, "Test 2": 2014, "Test final": 2015}
 GROUPE = ["Fulfill Via", "Shipment Mode", "region_origine"]
 
@@ -20,6 +21,11 @@ NUMERIQUES = [
     "Line Item Quantity", "Line Item Value", "Pack Price", "Unit Price",
     "delai_prevu_jours", "mois_prevu",
 ]
+EXTERNES = [
+    "petrole", "essence", "dollar", "confiance",
+    "petrole_var_30j", "essence_var_30j", "inflation_12m",
+    "gpr", "gpr_usa", "gpr_jour", "gpr_7j", "gpr_30j", "gscpi",
+]
 
 
 def noms_historique(suffixe):
@@ -30,6 +36,7 @@ def noms_historique(suffixe):
 
 FEATURES_R1 = CATEGORIES + NUMERIQUES
 FEATURES_R2 = FEATURES_R1 + noms_historique("_60") + noms_historique("_180")
+FEATURES_R3 = FEATURES_R2 + EXTERNES
 
 PARAMS = dict(n_estimators=300, learning_rate=0.03, num_leaves=15,
               min_child_samples=30, verbose=-1)
@@ -90,6 +97,17 @@ def ajouter_historique(df, fenetre, suffixe, jours_avant=30):
         df[nom] = valeurs
     return df
 
+
+def ajouter_signaux(df, jours_avant=30):
+    """Indicateurs externes connus à la date de décision (= date prévue - jours_avant).
+    La table des signaux respecte déjà les délais de publication."""
+    signaux = pd.read_parquet(CHEMIN_SIGNAUX)[["date"] + EXTERNES]
+    df = df.copy()
+    df["date_decision"] = df["date_prevue"] - pd.Timedelta(days=jours_avant)
+    return df.merge(signaux.rename(columns={"date": "date_decision"}),
+                    on="date_decision", how="left")
+
+
 def mesurer(vrai, risque, seuil):
     """AUC, rappel, précision, et % d'envois qui reçoivent une alerte."""
     alerte = (risque >= seuil).astype(int)
@@ -127,34 +145,3 @@ def modele_lgbm(train, test, features):
 
 def afficher(nom_modele, nom_test, r):
     print(f"{nom_modele:9} | {nom_test} | AUC : {r['auc']:.3f} "
-          f"| AUC usine : {r['auc_Drop']:.3f} | AUC entrepôt : {r['auc_RDC']:.3f} "
-          f"| Rappel : {r['rappel']*100:.1f} % | Précision : {r['precision']*100:.1f} %")
-
-
-if __name__ == "__main__":
-    mlflow.set_tracking_uri("sqlite:///mlflow.db")
-    mlflow.set_experiment("retard-import")
-
-    df = charger()
-    df = ajouter_historique(df, fenetre=60, suffixe="_60")
-    df = ajouter_historique(df, fenetre=180, suffixe="_180")
-
-    for nom_test, annee in TESTS.items():
-        train = df[df["annee"] < annee]
-        test = df[df["annee"] == annee]
-        seuil = train["en_retard"].mean()
-
-        risque = baseline(train, test)
-        r = mesurer(test["en_retard"], risque, seuil) | auc_par_mode(test, risque)
-        afficher("Baseline", nom_test, r)
-
-        for nom_modele, features in [("R1", FEATURES_R1), ("R2", FEATURES_R2)]:
-            with mlflow.start_run(run_name=f"{nom_modele} - {nom_test}"):
-                risque, _ = modele_lgbm(train, test, features)
-                r = mesurer(test["en_retard"], risque, seuil) | auc_par_mode(test, risque)
-                mlflow.log_params(PARAMS)
-                mlflow.log_param("modele", nom_modele)
-                mlflow.log_param("test", nom_test)
-                mlflow.log_param("features", ",".join(features))
-                mlflow.log_metrics(r)
-            afficher(nom_modele, nom_test, r)

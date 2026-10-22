@@ -301,3 +301,10 @@
 - **Choix :** l'historique récent d'une ligne exclut toutes les lignes du même envoi (`ASN/DN #`).
 - **Pourquoi :** les lignes d'un même envoi partagent presque toujours le même résultat ; une ligne livrée avant sa date de décision donnait sinon sa propre réponse au modèle.
 - **Effet :** baisse de 0,001 à 0,010 de l'AUC de R2 ; les résultats corrigés remplacent les anciens dans le document.
+
+
+
+## Retard : ne pas garder les indicateurs externes
+
+- **Choix :** R2 reste le modèle final ; R3 (R2 + indicateurs externes) n'est pas gardé.
+- **Pourquoi :** R3 a une AUC plus basse sur les 3 périodes ; l'historique récent des retards reflète déjà l'état de la logistique mondiale.

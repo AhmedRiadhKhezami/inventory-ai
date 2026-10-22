@@ -442,3 +442,10 @@ fenêtre de 180 jours, décision 30 jours avant la date prévue)
 - AUC R2 → R3 : 2013 0,755 → 0,742 ; 2014 0,829 → 0,827 ; 2015 0,805 → 0,765. Les indicateurs n'aident pas (RQ2, 2e partie).
 - Nouveau script `src/description_usaid.py` : taux de retard par facteur (2010–2015), corrélation mensuelle avec le GSCPI (0,45), marge P90 globale contre P90 par route, envois entrepôt, test « oracle ».
 - Correction de l'ancien brouillon : les taux de retard par facteur étaient calculés sur toutes les années (2006–2015) ; ils sont maintenant calculés sur 2010–2015, comme les modèles.
+
+
+## Exemple de Luca : tous les chiffres de la décision dans un script
+
+- Nouveau script `src/exemple_luca.py` : routes USAID utilisées en D3, facteur de crise, D1, D2, D3 et D4 sur l'exemple de Luca.
+- Facteur de crise recalculé : envois directs par bateau en retard 9,9 % (233 lignes) → 31,6 % (133 lignes) de juillet 2010 à juin 2011, soit x3,2.
+- Constat : sur la route bateau, 8,9 % des lignes dépassent le P90 ; le module suppose 10 % (valeur théorique), un choix prudent qui ne change aucune conclusion.

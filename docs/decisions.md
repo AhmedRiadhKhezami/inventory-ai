@@ -308,3 +308,8 @@
 
 - **Choix :** R2 reste le modèle final ; R3 (R2 + indicateurs externes) n'est pas gardé.
 - **Pourquoi :** R3 a une AUC plus basse sur les 3 périodes ; l'historique récent des retards reflète déjà l'état de la logistique mondiale.
+
+## Décision : garder 10 % de dépassement pour la route bateau
+
+- **Choix :** garder 10 % (valeur théorique d'un P90) au lieu des 8,9 % mesurés.
+- **Pourquoi :** choix prudent (un peu plus de ventes perdues comptées pour la Chine) ; les choix de fournisseur et les conclusions ne changent pas ; écrit clairement dans le document.

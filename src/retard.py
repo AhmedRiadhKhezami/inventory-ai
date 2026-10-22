@@ -145,3 +145,36 @@ def modele_lgbm(train, test, features):
 
 def afficher(nom_modele, nom_test, r):
     print(f"{nom_modele:9} | {nom_test} | AUC : {r['auc']:.3f} "
+          f"| AUC usine : {r['auc_Drop']:.3f} | AUC entrepôt : {r['auc_RDC']:.3f} "
+          f"| Rappel : {r['rappel']*100:.1f} % | Précision : {r['precision']*100:.1f} %")
+
+
+if __name__ == "__main__":
+    mlflow.set_tracking_uri("sqlite:///mlflow.db")
+    mlflow.set_experiment("retard-import")
+
+    df = charger()
+    df = ajouter_historique(df, fenetre=60, suffixe="_60")
+    df = ajouter_historique(df, fenetre=180, suffixe="_180")
+    df = ajouter_signaux(df)
+
+    for nom_test, annee in TESTS.items():
+        train = df[df["annee"] < annee]
+        test = df[df["annee"] == annee]
+        seuil = train["en_retard"].mean()
+
+        risque = baseline(train, test)
+        r = mesurer(test["en_retard"], risque, seuil) | auc_par_mode(test, risque)
+        afficher("Baseline", nom_test, r)
+
+        for nom_modele, features in [("R1", FEATURES_R1), ("R2", FEATURES_R2),
+                                     ("R3", FEATURES_R3)]:
+            with mlflow.start_run(run_name=f"{nom_modele} - {nom_test}"):
+                risque, _ = modele_lgbm(train, test, features)
+                r = mesurer(test["en_retard"], risque, seuil) | auc_par_mode(test, risque)
+                mlflow.log_params(PARAMS)
+                mlflow.log_param("modele", nom_modele)
+                mlflow.log_param("test", nom_test)
+                mlflow.log_param("features", ",".join(features))
+                mlflow.log_metrics(r)
+            afficher(nom_modele, nom_test, r)
